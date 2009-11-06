@@ -1,0 +1,14 @@
+Going to work with Dailymed and Diseasome for the prototype.
+
+Idea about including data source management component and dynamically pick which properties they are interested in querying.
+
+TODO: include this component in the architecture diagram
+
+TODO: Figure out a query to run which uses data from these 2 sources - Rachel
+
+TODO: Set up the server - Oshani
+
+
+Relevant URLs:
+http://thefigtrees.net/lee/sw/sparql-faq#tutorials
+http://dallemang.typepad.com/my_weblog/2008/08/rdf-as-self-describing-data.html
