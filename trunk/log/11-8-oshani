@@ -8,3 +8,15 @@ http://tomcat.apache.org/tomcat-6.0-doc/config/context.html
 
 More specific information can be found after installing the server can be found at:
 http://localhost:8080/docs/appdev/deployment.html
+
+
+Structure of the source repo
+=============================
+
+	1.	ui - place for all the JSP, HTML, JavaScripts and Stylesheets
+	2.	src - place for the java class files consisting of POJOÕs or servlets.
+	3.	etc - place for all config files like the most common web.xml
+	4.	lib - place for all the necessary jar files to run the application. I even have included servlet-api.jar in this directory since you may have to deploy your web application in a remote server after compiling.
+	5.	build - a temporary directory for keeping the compiled files
+	6.	dist - a place to put in the finally packaged war file (distribution)
+	7.	ant- place for my build.xml file and external properties file
