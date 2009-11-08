@@ -1,0 +1,10 @@
+Setting up the server
+======================
+
+The instructions at http://www.devworld.apple.com/internet/java/tomcat1.html is for Tomcat 4, but the latest is Tomcat 6.
+(And that's what I have installed)
+Some of the instructions given in that link are obsolete. Here's the configuration set up for the context:
+http://tomcat.apache.org/tomcat-6.0-doc/config/context.html
+
+More specific information can be found after installing the server can be found at:
+http://localhost:8080/docs/appdev/deployment.html
