@@ -1,0 +1,16 @@
+Related SPARQL queries for diseasome and dailymed:
+
+Run at http://www4.wiwiss.fu-berlin.de/diseasome/snorql/:
+SELECT ?disease
+WHERE {
+  ?x rdfs:label ?disease
+  FILTER regex(?disease, "^coronary artery disease$", "i")
+ }
+
+Run at http://www4.wiwiss.fu-berlin.de/dailymed/snorql
+SELECT ?name ?indication 
+WHERE {
+  ?x dailymed:indication ?indication
+  FILTER regex(?indication, "coronary artery disease", "i")
+  ?x rdfs:label ?name
+}
