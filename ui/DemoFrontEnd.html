@@ -1,10 +1,20 @@
 <html>
 <head><title>QueryMed Demo User Interface</title></head>
 <body>
-Welcome to the JavaScript course!
+Welcome to QueryMed!
+<br>
+<FORM NAME="myform" ACTION="" METHOD="GET">
+Enter a disease name: <BR>
+<INPUT TYPE="text" NAME="inputbox" VALUE=""><P>
+<INPUT TYPE="button" NAME="button" Value="Search" onClick="testResults(this.form)">
+</FORM>
+<br>
 <script type="text/javascript">
 <!--
-document.write("Hi there. This text is written using JavaScript!")
+function testResults (form) {
+    var TestVar = form.inputbox.value;
+    alert ("You typed: " + TestVar);
+}
 //-->
 </script>
 </body>
