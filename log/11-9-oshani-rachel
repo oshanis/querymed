@@ -1,0 +1,29 @@
+Server & basic queries are working!
+
+Ideas about the query translator/user interface
+
+UI components:
+
+Top-level search: main search text box.  Below the box there will be radio buttons so that the user can select which endpoints they are interested in searching.  A default set of suggested endpoints wil be 
+initially selected.
+
+When the user searches, they will see the top few results, a  list of endpoints, and the number of results and number of categories returned from each endpoint.  They can then expand the view of each endpoint
+to search for additional terms in specific categories, or to view results in specific endpoints or categories.
+
+There will also be a reset button to clear the search.
+
+Additional source files we will need to write include:
+-Source Manager--Manage list of endpoints
+-Cache Manager (manage caching of intermediate query results, mark the result with the source)
+-Query Refiner (gets the properties, allows the user to refine their query by specifying additional search terms 
+over these properties.
+
+One important issue we need to figure out is how to show the user the search result.  There may be a very
+large number of endpoints/properties that contain the search term--how do we choose the most relevant
+to initially show to the user and place at the top?
+	-one possibility is to sort by the number of occurances of the query term in the given property.
+		-A problem with this is that a property may be really relevant but only contain a given search
+		term once, eg if we are looking for a disease, but the name only appears once in the diseasome
+	-Alternately, we could prioritize some property types--for example, maybe if the query term matches the
+	rdfs:label field, we place it at the top.
+
