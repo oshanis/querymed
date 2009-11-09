@@ -1,6 +1,8 @@
 package edu.mit.querymed;
 
 import java.util.List;
+import java.util.Vector;
+
 import com.hp.hpl.jena.query.*;
 
 public class EndpointAggregator {
@@ -39,14 +41,19 @@ public class EndpointAggregator {
 		return qes;
 	}
 	
-	public void printResults(QueryExecution[] qes) {
+	public Vector<String> printResults(QueryExecution[] qes) {
+		
+		Vector<String> ret = new Vector<String>();
+		
 		for (int i = 0; i < qes.length; i++) { 
 			ResultSet results = qes[i].execSelect();	
 			while (results.hasNext()){
     				QuerySolution s = results.next();
-    				System.out.println(s);
+    				ret.add(s.toString());
 			}
 		}
+		
+		return ret;
 	}
 		
 	 public static void main(String[] args) {

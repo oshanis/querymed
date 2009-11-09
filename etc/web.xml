@@ -164,15 +164,15 @@
 
 
 <servlet>
-      <servlet-name>Hi</servlet-name>
+      <servlet-name>bioEndpointTest</servlet-name>
       <description>
         Testing
       </description>
-      <servlet-class>Hi</servlet-class>
+      <servlet-class>edu.mit.querymed.bioEndpointTest</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Hi</servlet-name>
-        <url-pattern>/Hi</url-pattern>
+        <servlet-name>bioEndpointTest</servlet-name>
+        <url-pattern>/bioEndpointTest</url-pattern>
     </servlet-mapping>
 </web-app>
