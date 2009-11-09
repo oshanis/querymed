@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.hp.hpl.jena.query.*;
 
-public class bioEndpointTest extends HttpServlet{
+public class RunQuery extends HttpServlet{
 	
     public void doGet(HttpServletRequest req,
             HttpServletResponse resp)
@@ -38,7 +38,7 @@ public class bioEndpointTest extends HttpServlet{
         
             value = req.getParameter(name);
             
-            EndpointAggregator ea = new EndpointAggregator(value);
+            Mediator ea = new Mediator(value);
  			QueryExecution[] qes = ea.constructSelectQueries();
  			Vector<String> v = ea.printResults(qes);
 	          for (String i: v) {

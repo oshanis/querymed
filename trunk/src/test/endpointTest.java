@@ -1,4 +1,4 @@
-package edu.mit.querymed;
+package test;
 
 import java.util.List;
 

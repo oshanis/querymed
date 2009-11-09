@@ -1,4 +1,4 @@
-package edu.mit.querymed;
+package test;
 
 public class endpoint {
 
