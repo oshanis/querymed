@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import com.hp.hpl.jena.query.*;
 
-public class EndpointAggregator {
+public class Mediator {
 	private String [] endpoints;
 	private String input;
 	private String diseasomeQuery;
@@ -17,12 +17,12 @@ public class EndpointAggregator {
 
 	
 	//Constructor
-	public EndpointAggregator(String[] endpoints, String input) {
+	public Mediator(String[] endpoints, String input) {
 			this.endpoints = endpoints;
 			this.input = input;
 		}
 	
-	public EndpointAggregator(String input){
+	public Mediator(String input){
 		String[] endpoints = new String[2];
 		endpoints[DISEASOME_INDEX] = DISEASOME_ENDPOINT;
 		endpoints[DAILYMED_INDEX] = DAILYMED_ENDPOINT;
@@ -57,7 +57,7 @@ public class EndpointAggregator {
 	}
 		
 	 public static void main(String[] args) {
-		 			EndpointAggregator ea = new EndpointAggregator("coronary artery disease");
+		 			Mediator ea = new Mediator("coronary artery disease");
 		 			QueryExecution[] qes = ea.constructSelectQueries();
 		 			ea.printResults(qes);
 	 }
