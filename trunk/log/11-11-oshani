@@ -1,0 +1,11 @@
+Query refiner
+==============
+
+Using this query we can obtain what concepts are present in the sparql endpoint:
+SELECT DISTINCT ?Concept WHERE {[] a ?Concept}
+
+Also, it might be helpful to have all the properties listed:
+SELECT DISTINCT ?p WHERE {?s ?p ?o}
+
+Cache Manager
+==============
