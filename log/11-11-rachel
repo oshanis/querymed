@@ -1,0 +1,18 @@
+Queries to run:
+
+1) Identify all classes
+SELECT DISTINCT ?class
+WHERE { [] a ?class }
+ORDER BY ?class
+
+2) Identify all properties
+SELECT DISTINCT ?property
+WHERE { [] ?property [] }
+ORDER BY ?property
+
+3) Search a specific set of fields for the term input by the user:
+
+SELECT ?name ?indication ...?everything...
+WHERE {?x dailymed:indication ?indication 
+FILTER regex(?indication, '" + input +"', 'i)
+}
