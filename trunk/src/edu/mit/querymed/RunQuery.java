@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import test.MediatorTest;
+
 import com.hp.hpl.jena.query.*;
 
 public class RunQuery extends HttpServlet{
@@ -38,7 +40,7 @@ public class RunQuery extends HttpServlet{
         
             value = req.getParameter(name);
             
-            Mediator ea = new Mediator(value);
+            MediatorTest ea = new MediatorTest(value);
  			QueryExecution[] qes = ea.constructSelectQueries();
  			Vector<String> v = ea.printResults(qes);
 	          for (String i: v) {
