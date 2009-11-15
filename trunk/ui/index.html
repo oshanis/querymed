@@ -36,12 +36,14 @@ Enter a disease name: <BR>
 				//Display the containers for each of the data sources once the checkbox is clicked
 				showProperties();
 				$(":checkbox").click(showProperties);
+
+				
 			} );
 			
 			$(function(){
 
 				// Accordion
-				$("#selectors").accordion({ header: "h3", autoHeight:false });
+				//$("#selectors").accordion({ header: "h3", autoHeight:false });
                 
 				
 				// Tabs
@@ -111,10 +113,10 @@ Enter a disease name: <BR>
 <p>		
 Select from one or more of the following data sources:		  
 <form id="datasources">
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="Diseaseome" id="datasource1" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="DailyMed" id="datasource2" name="DailyMed">DailyMed (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="Drugbank" id="datasource3" name="Drugbank">Drugbank (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="LinkedCT" id="datasource4" name="LinkedCT">Linked Clinical Trials</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="diseasome" id="datasource1" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="dailymed" id="datasource2" name="DailyMed">DailyMed (Drug Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="drugbank" id="datasource3" name="Drugbank">Drugbank (Drug Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="linkedct" id="datasource4" name="LinkedCT">Linked Clinical Trials</input><br/>
 
 <p>
 <a href="#" onClick="addDialog('Not impelemented', 'We are working on it')" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
@@ -129,17 +131,6 @@ Select from one or more of the following data sources:
 <p><i></i></p>
 
 <div id="selectors">
-	<div id="com">
-		<h3><a href="#">Diseasome</a></h3>
-		<p>Search by property: <input type="textbox" id="property" value=""></p>
-		
-	</div> <!--com-->
-	
-	<div id="org">
-		<h3><a href="#">DailyMed</a></h3>
-		<p>Search by property: <input type="textbox" id="property" value=""></p>
-
-	</div> <!-- org -->
 </div> <!--selectors -->
 
 
