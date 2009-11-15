@@ -1,20 +1,30 @@
 package edu.mit.querymed;
 
 import java.util.*;
+import java.io.*;
+
 /*
  * This class manages all the source endpoints
  */
 public class SourceManager {
 	private HashMap<String, Endpoint> allEndpoints;
-	private HashMap<String, Endpoint> selectedEndpoints;
+	private HashMap<String, Endpoint> selectedEndpoints;  /*stores endpoints for current user query.  Maps URI to endpoint */
 	private String endpointListURI; /*stores enpoint list*/
-	private static final String DEFAULT_ENDPOINTS = "../../../../resources/sources"; /*default endpoint list*/
+	private static final String DEFAULT_ENDPOINTS = "../../../"; /*default endpoint list*/
 	
 	/*Construct a SourceManager using the default endpoint list*/
-	public SourceManager(){
-		
+	public SourceManager() throws IOException{
+		String line;
+	
+        InputStream is = SourceManager.class.getResourceAsStream(DEFAULT_ENDPOINTS);
+        BufferedReader br= new BufferedReader(new InputStreamReader(is));
+		while((line = br.readLine()) != null){
+			System.out.println(line);
+			
+		}
 		
 	}
+	
 	/*Construct a SourceManager using a user specified endpoint list*/
 	public SourceManager(String URI){
 		
@@ -40,11 +50,8 @@ public class SourceManager {
 		return this.endpointListURI;
 	}
 	
-	public Endpoint getSelectedEndpoint(String name){
-		return null;
-	}
-
-	public Endpoint getEndpoint(String name){
-		return null;
-	}
-}
+	/*Maim method for testing */
+	public static void main(String[] args){
+		try{SourceManager s = new SourceManager();} catch (IOException e) {System.err.println(e);}
+		}		
+	}	
