@@ -30,6 +30,9 @@
 		<copy todir="${build.dir}/WEB-INF">
 			<fileset dir="${conf.dir}"/>
 		</copy>
+		<copy todir="${build.dir}/WEB-INF">
+			<fileset dir="${resources.dir}"/>
+		</copy>
 		<copy todir="${build.dir}">
 			<fileset dir="${web.content}"/>
 		</copy>

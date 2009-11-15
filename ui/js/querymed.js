@@ -1,8 +1,20 @@
 /**
-* Colab Assessment Guide
+* QueryMed UI
 * oshani@csail.mit.edu
 */
 
+
+//This function is called when each of the data sources are clicked
+//the properties of these data sources are fetched and displayed so
+// that the user can input values for those, and restrict the query
+function showProperties(){
+    var n = $("input:checked").length;
+    alert(n);
+}
+
+
+//@@ REMOVE THESE LATER
+//OLD CODE FROM COLAB
 
 var a; //this is the only global variable in this program
 		//it denotes an assesment object

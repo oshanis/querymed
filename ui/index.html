@@ -33,7 +33,11 @@ Enter a disease name: <BR>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				$('#example').dataTable();
+				//Display the containers for each of the data sources once the checkbox is clicked
+				showProperties();
+				$(":checkbox").click(showProperties);
 			} );
+			
 			$(function(){
 
 				// Accordion
@@ -86,7 +90,6 @@ Enter a disease name: <BR>
 					function() { $(this).addClass('ui-state-hover'); }, 
 					function() { $(this).removeClass('ui-state-hover'); }
 				);
-				
 			});
 			
 		</script>
@@ -103,18 +106,19 @@ Enter a disease name: <BR>
 
 </div>
 
-<p>Disease Name: <input type="textbox" id="disease" value="cornonary artery disease"> </p>
+<p>Enter a search term to query bio-medical data sources: <input type="textbox" id="disease" value="cornonary artery disease"> </p>
 
 <p>		
-Search from the following data sources:		  
-<form id="c2">
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="B" id="C2B" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="B" id="C2B" name="DailyMed">DailyMed (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="B" id="C2B" name="Drugbank">Drugbank (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="B" id="C2B" name="LinkedCT">Linked Clinical Trials</input><br/>
+Select from one or more of the following data sources:		  
+<form id="datasources">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="Diseaseome" id="datasource1" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="DailyMed" id="datasource2" name="DailyMed">DailyMed (Drug Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="Drugbank" id="datasource3" name="Drugbank">Drugbank (Drug Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="LinkedCT" id="datasource4" name="LinkedCT">Linked Clinical Trials</input><br/>
 
 <p>
 <a href="#" onClick="addDialog('Not impelemented', 'We are working on it')" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
+<br/><br/>
 <a href="#" onClick="addDialog('Not impelemented', 'We are working on it')" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-check"></span>Search</a>
 <a href="#" onClick="c2_clear()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span>Clear Choices</a>
 </p>
@@ -124,70 +128,17 @@ Search from the following data sources:
 
 <p><i></i></p>
 
-
-
-
-		<p>Search by property: <input type="textbox" id="property" value=""></p>
-
-	
 <div id="selectors">
 	<div id="com">
 		<h3><a href="#">Diseasome</a></h3>
+		<p>Search by property: <input type="textbox" id="property" value=""></p>
 		
-		<div id="comtabs">
-			<ul>
-				<li><a href="#comtabs1">Disease</a></li>
-				<li><a href="#comtabs2">...</a></li>
-			</ul>
-
-			<div id="comtabs1">
-			
-				<div>
-					<h4>Disease name</h4>
-					<div>
-				</div>
-			</div>
-			
-			</div> <!--combtabs1 -->
-			
-			<div id="comtabs2">
-			<div>
-				<h4>...</h4>
-				<div>
-			</div>
-
-		
-			</div>	
-			
-			</div> <!--combtabs1 -->
-			
-		</div> <!--comtabs-->
 	</div> <!--com-->
 	
 	<div id="org">
 		<h3><a href="#">DailyMed</a></h3>
+		<p>Search by property: <input type="textbox" id="property" value=""></p>
 
-		<div id="orgtabs">
-			<ul>
-				<li><a href="#orgtabs1">Drug Name</a></li>
-				<li><a href="#orgtabs2">Indication</a></li>
-				<li><a href="#orgtabs3">Side Effects</a></li>
-				<li><a href="#orgtabs4">Dosage</a></li>
-				<li><a href="#orgtabs5">Precaution</a></li>
-				<li><a href="#orgtabs6">Active Moiety</a></li>
-			</ul>
-
-			<div id="orgtabs1">
-				<div>
-				<h4>Drug Name</h4>
-				<div>
-				</div>
-
-			</div> <!-- orgtabs1 -->
-	
-			
-	
-		</div> <!--orgtabs -->
 	</div> <!-- org -->
 </div> <!--selectors -->
 
