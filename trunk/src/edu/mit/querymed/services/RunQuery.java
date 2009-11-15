@@ -1,4 +1,4 @@
-package edu.mit.querymed; 
+package edu.mit.querymed.services; 
 
 import java.io.IOException;
 import java.io.PrintWriter;

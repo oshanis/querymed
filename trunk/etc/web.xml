@@ -163,16 +163,43 @@
     </session-config>
 
 
-<servlet>
+	<servlet>
       <servlet-name>RunQuery</servlet-name>
       <description>
         Testing
       </description>
-      <servlet-class>edu.mit.querymed.RunQuery</servlet-class>
+      <servlet-class>edu.mit.querymed.services.RunQuery</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>RunQuery</servlet-name>
         <url-pattern>/RunQuery</url-pattern>
     </servlet-mapping>
+
+	<servlet>
+      <servlet-name>AddEndpoint</servlet-name>
+      <description>
+        Testing
+      </description>
+      <servlet-class>edu.mit.querymed.services.AddEndpoint</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AddEndpoint</servlet-name>
+        <url-pattern>/AddEndpoint</url-pattern>
+    </servlet-mapping>
+
+	<servlet>
+      <servlet-name>GetProperties</servlet-name>
+      <description>
+        Testing
+      </description>
+      <servlet-class>edu.mit.querymed.services.GetProperties</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetProperties</servlet-name>
+        <url-pattern>/GetProperties</url-pattern>
+    </servlet-mapping>
+
 </web-app>

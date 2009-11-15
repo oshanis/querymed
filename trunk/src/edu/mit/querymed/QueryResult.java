@@ -9,6 +9,7 @@ import com.hp.hpl.jena.query.ResultSet;
  * This class models the result of a query. 
  * Has provenance information such as what endpoint was called, and what parameters are in the result set.
  */
+//@@@TODO: Use Query
 
 public class QueryResult {
 
