@@ -1,2 +1,4 @@
 diseasome	http://www4.wiwiss.fu-berlin.de/diseasome/sparql
 dailymed	http://www4.wiwiss.fu-berlin.de/dailymed/sparql
+drugbank	http://www4.wiwiss.fu-berlin.de/drugbank/sparql
+linkedct	http://linkedct.org/snorql/index.html

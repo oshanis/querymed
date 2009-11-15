@@ -3,15 +3,68 @@
 * oshani@csail.mit.edu
 */
 
+//Convenience function to get the SPARQL endpoint given the name
+//Can't really read files in the local file system. So have to depend 
+//on a method like this.
+function getDataSourceURI(name){
+	
+	switch(name){
+	case "diseasome":
+		return "http://www4.wiwiss.fu-berlin.de/diseasome/snorql";
+		break;
+	case "dailymed":
+		return "http://www4.wiwiss.fu-berlin.de/diseasome/snorql";
+		break;
+	case "drugbank":
+		return "http://www4.wiwiss.fu-berlin.de/drugbank/snorql";
+		break;
+	case "linkedct":
+		return "http://linkedct.org/snorql/index.html";
+		break;
+	}
+}
 
 //This function is called when each of the data sources are clicked
 //the properties of these data sources are fetched and displayed so
 // that the user can input values for those, and restrict the query
 function showProperties(){
-    var n = $("input:checked").length;
-    alert(n);
+
+	$('#datasources :checkbox:checked').each(function() {
+		if ($('#selectors').find('#'+$(this).val()).length == 0){
+			$('#selectors').append(createSourceDiv($(this).val())).accordion('destroy').accordion({ header: "h3", autoHeight:false });
+		}
+		});
+
+	$("#datasources :input:not(:checked)").each(function() {
+		$('#selectors').find('#'+$(this).val()).remove();
+	});
+
 }
 
+function createSourceDiv(source){
+
+    /** Should look like this:
+    <div id="diseasome">
+	<h3><a href="#">Diseasome</a></h3>
+	<p>Search by property: <input type="textbox" id="property" value=""></p>
+	</div> <!--com-->
+	*/
+
+	var sourceDiv = '<div id="'+source+'">';
+	sourceDiv += '<h3><a href="#">'+source+'</a></h3>';
+	
+	$.ajax({
+			type: "GET",
+			url: getDataSourceURI(source),
+			data: "o1="+a.o1,
+			success: updateSourceDiv(source, data)
+		});
+
+	
+	sourceDiv += '<p>'+getDataSourceURI(source)+'</p>';
+	sourceDiv += '</div>';
+	return sourceDiv;
+}
 
 //@@ REMOVE THESE LATER
 //OLD CODE FROM COLAB
