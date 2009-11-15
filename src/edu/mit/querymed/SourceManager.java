@@ -2,6 +2,7 @@ package edu.mit.querymed;
 
 import java.util.*;
 import java.io.*;
+import java.net.*;
 
 /*
  * This class manages all the source endpoints
@@ -10,12 +11,24 @@ public class SourceManager {
 	private HashMap<String, Endpoint> allEndpoints;
 	private HashMap<String, Endpoint> selectedEndpoints;  /*stores endpoints for current user query.  Maps URI to endpoint */
 	private String endpointListURI; /*stores enpoint list*/
-	private static final String DEFAULT_ENDPOINTS = "../../../"; /*default endpoint list*/
+	private static final String DEFAULT_ENDPOINTS = "sources"; /*default endpoint list*/
 	
 	/*Construct a SourceManager using the default endpoint list*/
 	public SourceManager() throws IOException{
 		String line;
-	
+		File f = new File(".");
+		ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+
+        //Get the URLs
+        URL[] urls = ((URLClassLoader)sysClassLoader).getURLs();
+
+        for(int i=0; i< urls.length; i++)
+        {
+            System.out.println(urls[i].getFile());
+        }       
+
+
+		
         InputStream is = SourceManager.class.getResourceAsStream(DEFAULT_ENDPOINTS);
         BufferedReader br= new BufferedReader(new InputStreamReader(is));
 		while((line = br.readLine()) != null){
