@@ -8,8 +8,8 @@ import java.net.*;
  * This class manages all the source endpoints
  */
 public class SourceManager {
-	private HashMap<String, Endpoint> allEndpoints;
-	private HashMap<String, Endpoint> selectedEndpoints;  /*stores endpoints for current user query.  Maps URI to endpoint */
+	private static HashMap<String, Endpoint> allEndpoints;
+	private static HashMap<String, Endpoint> selectedEndpoints;  /*stores endpoints for current user query.  Maps URI to endpoint */
 	private String endpointListURI; /*stores endpoint list*/
 	private static final String DEFAULT_ENDPOINTS = "sources"; /*default endpoint list*/
 	
@@ -48,7 +48,7 @@ public class SourceManager {
 			Endpoint e = new Endpoint(parts[0], parts[1]);
 			allEndpoints.put(parts[1], e);
 			selectedEndpoints.put(parts[1], e);
-			System.out.println(line);
+//			System.out.println(line);
 		}
        
        
@@ -85,8 +85,18 @@ public class SourceManager {
 	public HashMap<String,Endpoint> getSelectedEndpointsMap(){
 		return selectedEndpoints;
 	}
-	/*Maim method for testing */
+	
+	/*Main method for testing */
 	public static void main(String[] args){
-		try{SourceManager s = new SourceManager("../querymed/resources/sources");} catch (Exception e) {System.err.println(e);}
+		try{
+			SourceManager s = new SourceManager("../querymed/resources/sources");
+//			Endpoint e = new Endpoint("name", "http://uri1");
+			Endpoint f = new Endpoint("name", "http://uri2");
+//			s.addEndpoint(e);
+			s.addEndpoint(f);
+			for (String i:  allEndpoints.keySet()){
+				System.out.println(allEndpoints.get(i).getURI());
+			}
+		} catch (Exception e) {System.err.println(e);}
 		}		
 	}	

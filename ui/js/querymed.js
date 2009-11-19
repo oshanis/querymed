@@ -53,12 +53,12 @@ function createSourceDiv(source){
 	var sourceDiv = '<div id="'+source+'">';
 	sourceDiv += '<h3><a href="#">'+source+'</a></h3>';
 	
-	$.ajax({
-			type: "GET",
-			url: getDataSourceURI(source),
-			data: "o1="+a.o1,
-			success: updateSourceDiv(source, data)
-		});
+//	$.ajax({
+//			type: "GET",
+//			url: getDataSourceURI(source),
+//			data: "o1="+a.o1,
+//			success: updateSourceDiv(source, data)
+//		});
 
 	
 	sourceDiv += '<p>'+getDataSourceURI(source)+'</p>';
