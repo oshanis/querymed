@@ -1,0 +1,2 @@
+The first part of the UI on editing the SPARQL query is done. 
+It basically shows the pane corresponding to the data source the user selected.
