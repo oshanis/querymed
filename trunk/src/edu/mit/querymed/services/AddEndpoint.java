@@ -53,7 +53,7 @@ public class AddEndpoint  extends HttpServlet{
             // The following generates a page showing all the request parameters
             PrintWriter out = resp.getWriter();
             resp.setContentType("text/plain");
-            
+
 //            MediatorTest ea = new MediatorTest(value);
 // 			QueryExecution[] qes = ea.constructSelectQueries();
 // 			Vector<String> v = ea.printResults(qes);

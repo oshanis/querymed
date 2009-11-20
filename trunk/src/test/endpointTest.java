@@ -3,6 +3,9 @@ package test;
 import java.util.List;
 
 import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONException;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 
 
 public class endpointTest {
@@ -10,31 +13,36 @@ public class endpointTest {
 	
     public static void main(String arguments[]){
     	
-    	try {
+    	String service = "http://www4.wiwiss.fu-berlin.de/diseasome/sparql";
+    	
+        String prefixes = 	"PREFIX d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#>" +
+		"PREFIX vocabClass: <http://www4.wiwiss.fu-berlin.de/drugbank/vocab/resource/class/>" +
+		"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
+		"PREFIX diseasome: <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/>" +
+		"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
+		"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
+		"PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
+		"PREFIX vocabProperty: <http://www4.wiwiss.fu-berlin.de/drugbank/vocab/resource/property/>" +
+		"PREFIX db: <http://www4.wiwiss.fu-berlin.de/diseasome/resource/>" +
+		"PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>" +
+		"PREFIX dbpedia: <http://dbpedia.org/ontology/>" +
+		"PREFIX map: <file:/C:/apps/diseasome/diseasome.n3#>"+
+		"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>";
 
-    		String service = "http://demo.openlinksw.com/sparql";
-    		String query = "PREFIX foaf:  <http://xmlns.com/foaf/0.1/> SELECT ?person ?name FROM <http://www.w3.org/People/Berners-Lee/card> WHERE { ?person foaf:name ?name .}";
-    		QueryExecution e  = QueryExecutionFactory.sparqlService(service, query);
-    		
-    		ResultSet results = e.execSelect();
-    		
-    		
+		String query = prefixes + " SELECT DISTINCT ?p WHERE {?s ?p ?o}";
+		
+		QueryExecution e  = QueryExecutionFactory.sparqlService(service, query);
+		
+		ResultSet results = e.execSelect();
+		
+		JSONArray arr = new JSONArray();
+		
+		while (results.hasNext()){
+			QuerySolution s = results.next();
+			arr.put(s.get("p"));
+		}
 
-//    		List<String> l = results.getResultVars();
-//    	
-//    		for (int i=0; i<l.size(); i++){
-//    			System.out.println(i+" : "+l.get(i));
-//    		}
-
-    		while (results.hasNext()){
-    			QuerySolution s = results.next();
-    			System.out.println(s);
-
- //   			System.out.println(s.get("name"));
-    		}
-    		
-    	} 
-    	catch (Exception e) {
-        }
+		System.out.println(arr.toString());
+		
     }
 }

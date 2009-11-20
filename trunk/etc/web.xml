@@ -25,12 +25,11 @@
 
     <!-- General description of your web application -->
 
-    <display-name>My Web Application</display-name>
+    <display-name>QueryMed</display-name>
     <description>
-      This is version X.X of an application to perform
-      a wild and wonderful task, based on servlets and
-      JSP pages.  It was written by Dave Developer
-      (dave@mycompany.com), who should be contacted for
+      This is the back end of QueryMed: an intelligent query translator and visualizer for 
+      biolmedical data.  It was written by Oshani Seneviratne (oshani@csail.mit.edu) and 
+      Rachel Sealfon (rsealfon@csail.mit.edu), who should be contacted for
       more information.
     </description>
 
@@ -54,7 +53,7 @@
 
     <context-param>
       <param-name>webmaster</param-name>
-      <param-value>myaddress@mycompany.com</param-value>
+      <param-value>oshani@csail.mit.edu</param-value>
       <description>
         The EMAIL address of the administrator to whom questions
         and comments about this application should be addressed.
