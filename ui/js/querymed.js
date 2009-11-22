@@ -167,6 +167,19 @@ function addDialog(title, info){
 
 }
 
+function addSource(){
+	$("#add-source").dialog({
+		width: 500,
+	      position: ['center', 'top'],
+	      buttons: { "Ok": function() {
+		$(this).dialog("close"); 
+		$(this).dialog("destroy");
+		$(this).empty();
+	      }
+	    } 
+	  });
+	
+}
 function addErrorDialog(choice){
 	var msg = '<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span> No choices selected for '+choice+'!</p>';
 	$("#container").html(msg);
