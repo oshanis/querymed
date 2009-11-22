@@ -1,6 +1,5 @@
 /**
 * QueryMed UI
-* oshani@csail.mit.edu
 */
 
 function optionclear(){
@@ -92,7 +91,14 @@ function showProperties(){
 					});
 					
 					$('#propertyoptions').change(function(){
-						alert($(this).val());
+						
+						$(propertyid).append('&nbsp;&nbsp;&nbsp;<input id="propname" type="text" value='+$(this).val()+'/>');
+						//The plugin for autogrowing the textboxes are defined in ...
+						$('input#propname').autoGrowInput({
+						    comfortZone: 10,
+						    minWidth: 200,
+						    maxWidth: 2000
+						});
 					});
 					$('#selectors').accordion('destroy').accordion({ header: "h3", autoHeight:false });
 		     	}
@@ -101,8 +107,8 @@ function showProperties(){
 		});
 
 		$("#datasources :input:not(:checked)").each(function() {
-		$('#selectors').find('#'+$(this).val()).remove();
-	});
+			$('#selectors').find('#'+$(this).val()).remove();
+		});
 
 }
 

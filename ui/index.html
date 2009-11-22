@@ -28,75 +28,11 @@ Enter a disease name: <BR>
 		<script type="text/javascript" src="js/jquery-ui-1.7.1.custom.min.js"></script>
 		<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 		<script type="text/javascript" src="js/jquery.print.js"></script>
+		<script type="text/javascript" src="js/jquery.autogrow.js"></script>
 		<script type="text/javascript" src="js/tokenizer.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/querymed.js"></script>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#example').dataTable();
-				//Display the containers for each of the data sources once the checkbox is clicked
-				showProperties();
-				$(":checkbox").click(showProperties);
-
-				
-			} );
-			
-			$(function(){
-
-				// Accordion
-				//$("#selectors").accordion({ header: "h3", autoHeight:false });
-                
-				
-				// Tabs
-				$comtabs = $('#comtabs').tabs();
-				$orgtabs = $('#orgtabs').tabs();
-
-
-				// Dialog			
-				$('#dialog').dialog({
-					autoOpen: false,
-					width: 600,
-					buttons: {
-						"Ok": function() { 
-							$(this).dialog("close"); 
-						}, 
-						"Cancel": function() { 
-							$(this).dialog("close"); 
-						} 
-					}
-				});
-				
-				// Dialog Link
-				$('#dialog_link').click(function(){
-					$('#dialog').dialog('open');
-					return false;
-				});
-
-				// Datepicker
-				$('#datepicker').datepicker({
-					inline: true
-				});
-				
-				// Slider
-				$('#slider').slider({
-					range: true,
-					values: [17, 67]
-				});
-				
-				// Progressbar
-				$("#progressbar").progressbar({
-					value: 20 
-				});
-				
-				//hover states on the static widgets
-				$('#dialog_link, ul#icons li').hover(
-					function() { $(this).addClass('ui-state-hover'); }, 
-					function() { $(this).removeClass('ui-state-hover'); }
-				);
-			});
-			
-		</script>
+		<script type="text/javascript" src="js/init.js"></script>
 
 	</head>
 
