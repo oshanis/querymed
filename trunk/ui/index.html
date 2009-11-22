@@ -28,6 +28,7 @@ Enter a disease name: <BR>
 		<script type="text/javascript" src="js/jquery-ui-1.7.1.custom.min.js"></script>
 		<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 		<script type="text/javascript" src="js/jquery.print.js"></script>
+		<script type="text/javascript" src="js/tokenizer.js"></script>
 		<script type="text/javascript" src="js/querymed.js"></script>
 		
 		<script type="text/javascript">
@@ -113,10 +114,12 @@ Enter a disease name: <BR>
 <p>		
 Select from one or more of the following data sources:		  
 <form id="datasources">
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="diseasome" id="datasource1" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="dailymed" id="datasource2" name="DailyMed">DailyMed (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="drugbank" id="datasource3" name="Drugbank">Drugbank (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="linkedct" id="datasource4" name="LinkedCT">Linked Clinical Trials</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="diseasome" id="diseasome" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="dailymed" id="dailymed" name="DailyMed">DailyMed (Drug Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="drugbank" id="drugbank" name="Drugbank">Drugbank (Drug Info)</input><br/>
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="linkedct" id="linkedct" name="LinkedCT">Linked Clinical Trials</input><br/>
+
+</form>
 
 <p>
 <a href="#" onClick="addSource()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
@@ -125,7 +128,6 @@ Select from one or more of the following data sources:
 <a href="#" onClick="c2_clear()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span>Clear Choices</a>
 </p>
 					
-</form>
    </p>
 
 <p><i></i></p>
@@ -163,7 +165,23 @@ Select from one or more of the following data sources:
 	<div id="container" title="Information" class="printable">
 	</div>
 
-	<div id="add-source" title="Add Source" class="display:none">
+
+<!-- Add Dialog box text -->
+
+	<div id="add-source" title="Add Source" style="display:none">
+	<form id="add-source-form">
+
+	<fieldset>
+	<label for="name">Source Name</label>
+	<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+	<br><br>
+	<label for="url">Source URL</label>
+	<input type="text" name="url" class="text ui-widget-content ui-corner-all" />
+	
+	</fieldset>
+	</form>
+	</div>
+	
 	</div>
 
 	</body>

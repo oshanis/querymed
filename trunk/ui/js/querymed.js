@@ -24,6 +24,20 @@ function getDataSourceURI(name){
 	}
 }
 
+function addSource(){
+	$("#add-source").dialog({
+		width: 500,
+	      position: ['center', 'top'],
+	      buttons: { "Ok": function() {
+			var s = $('#name').val();
+			$('#datasources').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="'+s+'" id="'+s+'" name="'+s+'">'+s+'</input><br/>');
+			$(this).dialog("close"); 
+			$(this).dialog("destroy");
+	      }
+	    } 
+	  });
+}
+
 //This function is called when each of the data sources are clicked
 //the properties of these data sources are fetched and displayed so
 // that the user can input values for those, and restrict the query
@@ -50,7 +64,7 @@ function showProperties(){
 				$('#selectors').append(sourceDiv).accordion('destroy').accordion({ header: "h3", autoHeight:false });
 			}
 			
-			$(propertyid).append('<p>Retrieving properties from the server. Please wait.</p>');
+			$(propertyid).append('<b>Retrieving properties from the server. Please wait...</b><br/><br/>');
 			
 			$.ajax({
 			   url: "GetProperties",
@@ -58,19 +72,46 @@ function showProperties(){
 			   data: "service="+getDataSourceURI(option),
 			   success: function(msg){
 					$(propertyid).children().remove();
-					$(propertyid).append('<p>'+msg+'</p>');
+					$(propertyid).append('<b>Add a value to the relevant properties:</b><br/><br/>');
+					$(propertyid).append('<select id="propertyoptions"></select>');
+					var tokens = msg.tokenize(",", " ", true);
+					$.each(tokens, function(val, text) {
+						$('#propertyoptions').append(
+								$('<option></option>').val(val).html(text)
+						);
+					});
+					
+					$('#propertyoptions').change(function(){
+						alert("Hi");
+					});
 					$('#selectors').accordion('destroy').accordion({ header: "h3", autoHeight:false });
 		     	}
 			 });
 		}
 		});
 
-	$("#datasources :input:not(:checked)").each(function() {
+		$("#datasources :input:not(:checked)").each(function() {
 		$('#selectors').find('#'+$(this).val()).remove();
 	});
 
 }
 
+
+function addDialog(title, info){
+	$("#container").title = title;
+	$("#container").append(document.createTextNode(info));
+	$("#container").dialog({title: title,
+	      width: 500,
+	      position: ['center', 'top'],
+	      buttons: { "Ok": function() {
+		$(this).dialog("close"); 
+		$(this).dialog("destroy");
+		$(this).empty();
+	      }
+	    } 
+	  });
+
+}
 
 //@@ REMOVE THESE LATER
 //OLD CODE FROM COLAB
@@ -151,35 +192,7 @@ function Assessment(init_data){
 	}
 }
 
-function addDialog(title, info){
-	$("#container").title = title;
-	$("#container").append(document.createTextNode(info));
-	$("#container").dialog({title: title,
-	      width: 500,
-	      position: ['center', 'top'],
-	      buttons: { "Ok": function() {
-		$(this).dialog("close"); 
-		$(this).dialog("destroy");
-		$(this).empty();
-	      }
-	    } 
-	  });
 
-}
-
-function addSource(){
-	$("#add-source").dialog({
-		width: 500,
-	      position: ['center', 'top'],
-	      buttons: { "Ok": function() {
-		$(this).dialog("close"); 
-		$(this).dialog("destroy");
-		$(this).empty();
-	      }
-	    } 
-	  });
-	
-}
 function addErrorDialog(choice){
 	var msg = '<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span> No choices selected for '+choice+'!</p>';
 	$("#container").html(msg);
