@@ -3,6 +3,15 @@
 * oshani@csail.mit.edu
 */
 
+function optionclear(){
+	$("#datasources > input").removeAttr("checked");
+	$("#datasources :input:not(:checked)").each(function() {
+		$('#selectors').find('#'+$(this).val()).remove();
+	});
+}
+
+
+
 //Convenience function to get the SPARQL endpoint given the name
 //Can't really read files in the local file system. So have to depend 
 //on a method like this.
@@ -77,12 +86,13 @@ function showProperties(){
 					var tokens = msg.tokenize(",", " ", true);
 					$.each(tokens, function(val, text) {
 						$('#propertyoptions').append(
-								$('<option></option>').val(val).html(text)
+								//getNameFromURI(text) is defined in util.js
+								$('<option></option>').val(text).html(getNameFromURI(text))
 						);
 					});
 					
 					$('#propertyoptions').change(function(){
-						alert("Hi");
+						alert($(this).val());
 					});
 					$('#selectors').accordion('destroy').accordion({ header: "h3", autoHeight:false });
 		     	}
