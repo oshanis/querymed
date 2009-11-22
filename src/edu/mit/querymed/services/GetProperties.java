@@ -62,12 +62,20 @@ public class GetProperties  extends HttpServlet{
             
             //Sending the response as a json type
             resp.setContentType("application/json");
-            JSONArray arr = new JSONArray();
+            
+            //A JSON array seems too much work!
+            //JSONArray arr = new JSONArray();
+            
+            //So, just sending as comma seperated values:
+            String responseStr = "";
+            
             while (results.hasNext()){
     			QuerySolution s = results.next();
-    			arr.put(s.get("p"));
+    			responseStr += s.get("p") + ",";
+    		//	arr.put(s.get("p"));
     		}
-            out.write(arr.toString());
+            out.write(responseStr);
+            //out.write(arr.toString());
     	} 
     	catch (Exception e) {System.err.println(e);
         }	
