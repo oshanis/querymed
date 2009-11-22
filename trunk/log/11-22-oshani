@@ -1,0 +1,10 @@
+UI
+===
+
+Properties can be retrieved from each of the SPARQL endpoint and displayed.
+
+
+Notes on Java Servlet Session Management
+========================================
+
+The Servlet life cycle  
