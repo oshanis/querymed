@@ -29,6 +29,7 @@ Enter a disease name: <BR>
 		<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 		<script type="text/javascript" src="js/jquery.print.js"></script>
 		<script type="text/javascript" src="js/tokenizer.js"></script>
+		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/querymed.js"></script>
 		
 		<script type="text/javascript">
@@ -113,7 +114,7 @@ Enter a disease name: <BR>
 
 <p>		
 Select from one or more of the following data sources:		  
-<form id="datasources">
+<form id="datasources" class="datasources">
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="diseasome" id="diseasome" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="dailymed" id="dailymed" name="DailyMed">DailyMed (Drug Info)</input><br/>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="drugbank" id="drugbank" name="Drugbank">Drugbank (Drug Info)</input><br/>
@@ -125,7 +126,7 @@ Select from one or more of the following data sources:
 <a href="#" onClick="addSource()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
 <br/><br/>
 <a href="#" onClick="addDialog('Not impelemented', 'We are working on it')" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-check"></span>Search</a>
-<a href="#" onClick="c2_clear()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span>Clear Choices</a>
+<a href="#" onClick="optionclear()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span>Clear Choices</a>
 </p>
 					
    </p>
