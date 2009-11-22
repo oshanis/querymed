@@ -9,8 +9,6 @@ function optionclear(){
 	});
 }
 
-
-
 //Convenience function to get the SPARQL endpoint given the name
 //Can't really read files in the local file system. So have to depend 
 //on a method like this.
@@ -93,7 +91,6 @@ function showProperties(){
 					$('#propertyoptions').change(function(){
 						
 						$(propertyid).append('&nbsp;&nbsp;&nbsp;<input id="propname" type="text" value='+$(this).val()+'/>');
-						//The plugin for autogrowing the textboxes are defined in ...
 						$('input#propname').autoGrowInput({
 						    comfortZone: 10,
 						    minWidth: 200,
@@ -126,7 +123,6 @@ function addDialog(title, info){
 	      }
 	    } 
 	  });
-
 }
 
 //@@ REMOVE THESE LATER
