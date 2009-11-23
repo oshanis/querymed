@@ -1,5 +1,17 @@
+var dict;
+
 $(function(){
 
+	dict = {
+			diseasome: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
+			dailymed: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
+			drugbank: "http://www4.wiwiss.fu-berlin.de/drugbank/sparql",
+			linkedct:"http://linkedct.org/snorql/index.html"
+		};
+	for (property in dict) {
+		$('#datasources').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value='+ property + ' id=' + property + ' name=' + property + ' > ' + property + ' </input><br/>');
+	}
+	
 	// Accordion
 	//$("#selectors").accordion({ header: "h3", autoHeight:false });
     

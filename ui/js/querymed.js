@@ -9,27 +9,6 @@ function optionclear(){
 	});
 }
 
-//Convenience function to get the SPARQL endpoint given the name
-//Can't really read files in the local file system. So have to depend 
-//on a method like this.
-function getDataSourceURI(name){
-	
-	switch(name){
-	case "diseasome":
-		return "http://www4.wiwiss.fu-berlin.de/diseasome/sparql";
-		break;
-	case "dailymed":
-		return "http://www4.wiwiss.fu-berlin.de/diseasome/sparql";
-		break;
-	case "drugbank":
-		return "http://www4.wiwiss.fu-berlin.de/drugbank/sparql";
-		break;
-	case "linkedct":
-		return "http://linkedct.org/snorql/index.html";
-		break;
-	}
-}
-
 function addSource(){
 	$("#add-source").dialog({
 		width: 500,
@@ -37,6 +16,7 @@ function addSource(){
 	      buttons: { "Ok": function() {
 			var s = $('#name').val();
 			$('#datasources').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="'+s+'" id="'+s+'" name="'+s+'">'+s+'</input><br/>');
+			dict[s] = $('#url').val();
 			$(this).dialog("close"); 
 			$(this).dialog("destroy");
 	      }
@@ -44,12 +24,13 @@ function addSource(){
 	  });
 }
 
-//This function is called when each of the data sources are clicked
+//This function (defined in util.js) is called when each of the data sources are clicked
 //the properties of these data sources are fetched and displayed so
 // that the user can input values for those, and restrict the query
 function showProperties(){
 
 	$('#datasources :checkbox:checked').each(function() {
+		
 		if ($('#selectors').find('#'+$(this).val()).length == 0){
 	
 		    /** SourceDiv hould look like this:
@@ -62,40 +43,53 @@ function showProperties(){
 			var option = $(this).val();
 			var sourceDiv = '<div id="'+option+'">';
 			sourceDiv += '<h3><a href="#">'+option+'</a></h3>';
-			var propertyname = option+"_prop";
-			var propertyid='#'+propertyname;
-			sourceDiv += '<div id="'+propertyname+'"></div>';
+			var sourcename = option+"_prop";
+			var sourceid='#'+sourcename;
+			sourceDiv += '<div id="'+sourcename+'"></div>';
 			sourceDiv += '</div>';
+			
 			if ($('#selectors').find(option).length == 0){
 				$('#selectors').append(sourceDiv).accordion('destroy').accordion({ header: "h3", autoHeight:false });
 			}
 			
-			$(propertyid).append('<b>Retrieving properties from the server. Please wait...</b><br/><br/>');
+			$(sourceid).append('<b>Retrieving properties list from the server. Please wait...</b><br/><br/>');
 			
 			$.ajax({
 			   url: "GetProperties",
 			   processData: false,
-			   data: "service="+getDataSourceURI(option),
+			   data: "service="+dict[option],
 			   success: function(msg){
-					$(propertyid).children().remove();
-					$(propertyid).append('<b>Add a value to the relevant properties:</b><br/><br/>');
-					$(propertyid).append('<select id="propertyoptions"></select>');
-					var tokens = msg.tokenize(",", " ", true);
+					var propertyoptions = sourcename + "_options";
+					var propertyoptionsid = "#" + propertyoptions;
+					$(sourceid).children().remove();
+					$(sourceid).append('<b>Add a value to the relevant properties:</b><br/><br/>');
+					$(sourceid).append('<select id="'+propertyoptions+'"></select>');
+					var tokens = msg.tokenize(",", " ", true); //converts the comma seperated string into an array
 					$.each(tokens, function(val, text) {
-						$('#propertyoptions').append(
+						$(propertyoptionsid).append(
 								//getNameFromURI(text) is defined in util.js
 								$('<option></option>').val(text).html(getNameFromURI(text))
 						);
 					});
 					
-					$('#propertyoptions').change(function(){
+					$(propertyoptionsid).change(function(){
 						
-						$(propertyid).append('&nbsp;&nbsp;&nbsp;<input id="propname" type="text" value='+$(this).val()+'/>');
-						$('input#propname').autoGrowInput({
+						$(sourceid).append('&nbsp;&nbsp;&nbsp;<input id="propname" type="text" value="Retrieving property values..."/>');
+						$('input#propname').autoGrowInput({ //we don't know how long the input box should be, so expand when user wants to read to the end
 						    comfortZone: 10,
 						    minWidth: 200,
 						    maxWidth: 2000
 						});
+						$.ajax({
+							   url: "GetPropertyVals",
+							   processData: false,
+							   data: "service="+dict[option]+"&property="+$(this).val(),
+							   success: function(msg){
+									var data = msg.tokenize(",", " ", true);  //converts the comma seperated string into an array
+									$("#propname").autocomplete(data);
+							   }
+						});
+						
 					});
 					$('#selectors').accordion('destroy').accordion({ header: "h3", autoHeight:false });
 		     	}
