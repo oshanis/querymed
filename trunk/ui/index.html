@@ -52,6 +52,12 @@ Enter a disease name: <BR>
 
 <p>		
 Select from one or more of the following data sources:		  
+
+<form id="datasources" class="datasources">
+</form>
+
+<!--  		  
+
 <form id="datasources" class="datasources">
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="diseasome" id="diseasome" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="dailymed" id="dailymed" name="DailyMed">DailyMed (Drug Info)</input><br/>
@@ -59,6 +65,8 @@ Select from one or more of the following data sources:
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="linkedct" id="linkedct" name="LinkedCT">Linked Clinical Trials</input><br/>
 
 </form>
+-->
+
 
 <p>
 <a href="#" onClick="addSource()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
@@ -88,7 +96,7 @@ Select from one or more of the following data sources:
 	<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
 	<br><br>
 	<label for="url">Source URL</label>
-	<input type="text" name="url" class="text ui-widget-content ui-corner-all" />
+	<input type="text" id="url" name="url" class="text ui-widget-content ui-corner-all" />
 	
 	</fieldset>
 	</form>
