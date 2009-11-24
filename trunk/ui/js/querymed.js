@@ -29,7 +29,14 @@ function addSource(){
  */
 function searchAll(){
 	var keyword = $('#keyword').val();
-	alert(keyword);
+	$.ajax({
+		   url: "RunQuery",
+		   processData: false,
+		   data: "keyword="+keyword,
+		   success: function(msg){
+				alert(msg);
+		   }
+	});
 }
 
 //This function (defined in util.js) is called when each of the data sources are clicked
