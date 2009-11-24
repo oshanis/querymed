@@ -24,6 +24,14 @@ function addSource(){
 	  });
 }
 
+/*
+ * Executes a SPARQL query based on the keyword given in the text box
+ */
+function searchAll(){
+	var keyword = $('#keyword').val();
+	alert(keyword);
+}
+
 //This function (defined in util.js) is called when each of the data sources are clicked
 //the properties of these data sources are fetched and displayed so
 // that the user can input values for those, and restrict the query
@@ -66,6 +74,8 @@ function showProperties(){
 					$(sourceid).append('<select id="'+propertyoptions+'"></select>');
 					var tokens = msg.tokenize(",", " ", true); //converts the comma seperated string into an array
 					$.each(tokens, function(val, text) {
+	
+						
 						$(propertyoptionsid).append(
 								//getNameFromURI(text) is defined in util.js
 								$('<option></option>').val(text).html(getNameFromURI(text))
@@ -85,7 +95,12 @@ function showProperties(){
 							   processData: false,
 							   data: "service="+dict[option]+"&property="+$(this).val(),
 							   success: function(msg){
+									//@@TODO: Fix the CSS
+									//alert(msg);
 									var data = msg.tokenize(",", " ", true);  //converts the comma seperated string into an array
+									for (var i=0; i<data.length; i++){
+										data[i] = getNameFromURI(data[i]);
+									}
 									$("#propname").autocomplete(data);
 							   }
 						});

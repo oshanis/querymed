@@ -12,10 +12,9 @@ import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
 
 /*
- * This servlet is used to retrive all the possible values of any given SPARQL endpoint
+ * This servlet is used to retrieve all the possible values of any given SPARQL endpoint
  */
 public class GetPropertyVals  extends HttpServlet{
 
@@ -33,29 +32,16 @@ public class GetPropertyVals  extends HttpServlet{
  
     		String service = req.getParameter("service");
     		String property = req.getParameter("property");
-            if (service == null) {
-                // The request parameter 'param' was not present in the query string
-                // e.g. http://hostname.com?a=b
-            } else if ("".equals(service)) {
-                // The request parameter 'param' was present in the query string but has no value
-                // e.g. http://hostname.com?param=&a=b
-            }
-
-            String prefixes = 	"PREFIX d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#>" +
-            					"PREFIX vocabClass: <http://www4.wiwiss.fu-berlin.de/drugbank/vocab/resource/class/>" +
-            					"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" +
-            					"PREFIX diseasome: <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/>" +
-            					"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>" +
-            					"PREFIX foaf: <http://xmlns.com/foaf/0.1/>" +
-            					"PREFIX owl: <http://www.w3.org/2002/07/owl#>" +
-            					"PREFIX vocabProperty: <http://www4.wiwiss.fu-berlin.de/drugbank/vocab/resource/property/>" +
-            					"PREFIX db: <http://www4.wiwiss.fu-berlin.de/diseasome/resource/>" +
-            					"PREFIX drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/>" +
-            					"PREFIX dbpedia: <http://dbpedia.org/ontology/>" +
-            					"PREFIX map: <file:/C:/apps/diseasome/diseasome.n3#>"+
-								"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>";
             
-            String query = prefixes + "SELECT DISTINCT ?p WHERE {?s ?p ?o}";
+//    		if (service == null) {
+//                // The request parameter 'param' was not present in the query string
+//                // e.g. http://hostname.com?a=b
+//            } else if ("".equals(service)) {
+//                // The request parameter 'param' was present in the query string but has no value
+//                // e.g. http://hostname.com?param=&a=b
+//            }
+
+            String query = Util.prefixes + "SELECT DISTINCT ?o WHERE {?s <"+property+"> ?o}";
             
     		QueryExecution e  = QueryExecutionFactory.sparqlService(service, query);
     		
@@ -65,21 +51,31 @@ public class GetPropertyVals  extends HttpServlet{
             PrintWriter out = resp.getWriter();
             
             //Sending the response as a json type
-            resp.setContentType("application/json");
-            
-            //A JSON array seems too much work!
-            //JSONArray arr = new JSONArray();
+            resp.setContentType("text/plain");
             
             //So, just sending as comma seperated values:
             String responseStr = "";
             
             while (results.hasNext()){
     			QuerySolution s = results.next();
-    			responseStr += s.get("p") + ",";
-    		//	arr.put(s.get("p"));
+    			if (s.get("o").isLiteral()){
+    				System.out.println("literal");
+    				String dataType = s.getLiteral("o").getDatatype().getURI();
+    				if (dataType.equals("http://www.w3.org/2001/XMLSchema#int")){
+    					responseStr += s.getLiteral("o").getInt() + ",";	
+    				}
+    				
+    			}
+    			if (s.get("o").isAnon()) {
+    				//I dunno what to do here
+    				System.out.println("@@TODO: Handle anon case!");
+    			}
+    			if (s.get("o").isResource()){
+    				responseStr += s.getResource("o").getURI() + ",";
+    			}
+    			
     		}
             out.write(responseStr);
-            //out.write(arr.toString());
     	} 
     	catch (Exception e) {System.err.println(e);
         }	

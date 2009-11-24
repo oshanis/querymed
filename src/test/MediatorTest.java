@@ -5,6 +5,8 @@ import java.util.Vector;
 
 import com.hp.hpl.jena.query.*;
 
+import edu.mit.querymed.services.Util;
+
 public class MediatorTest {
 	private String [] endpoints;
 	private String input;
@@ -28,8 +30,10 @@ public class MediatorTest {
 		endpoints[DAILYMED_INDEX] = DAILYMED_ENDPOINT;
 		this.endpoints = endpoints;
 		this.input = input;
-		this.diseasomeQuery = 	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + input  + "', 'i') }";
-		this.dailymedQuery = "PREFIX dailymed: <http://www4.wiwiss.fu-berlin.de/dailymed/resource/dailymed/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + input +"', 'i') ?x rdfs:label ?name}";
+//		this.diseasomeQuery = 	"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + input  + "', 'i') }";
+//		this.dailymedQuery = "PREFIX dailymed: <http://www4.wiwiss.fu-berlin.de/dailymed/resource/dailymed/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + input +"', 'i') ?x rdfs:label ?name}";
+		this.diseasomeQuery = 	Util.prefixes + " SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + input  + "', 'i') }";
+		this.dailymedQuery = Util.prefixes + " SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + input +"', 'i') ?x rdfs:label ?name}";
 	}
 	
 	public QueryExecution[] constructSelectQueries() {
@@ -48,7 +52,8 @@ public class MediatorTest {
 		for (int i = 0; i < qes.length; i++) { 
 			ResultSet results = qes[i].execSelect();	
 			while (results.hasNext()){
-    				QuerySolution s = results.next();
+					QuerySolution s = results.next();
+					System.out.println(s.toString());
     				ret.add(s.toString());
 			}
 		}

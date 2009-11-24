@@ -4,11 +4,17 @@
  * so that the user interface will look much nicer!
  */
 function getNameFromURI(uri){
-	var tokens = uri.split("/");
-	if (tokens.length == 0){
-		tokens = uri.split("#");
+	//First check if the uri is actually a uri, i.e. whether it starts with "http://"
+	if (uri.search(/http/i) > -1){
+		var tokens = uri.split("/");
+		if (tokens.length == 0){
+			tokens = uri.split("#");
+		}
+		return tokens[tokens.length - 1];
 	}
-	return tokens[tokens.length - 1];
+	else {
+		return uri;
+	}
 }
 
 $(document).ready(function() {

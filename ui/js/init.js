@@ -2,6 +2,7 @@ var dict;
 
 $(function(){
 
+	//Data structure to keep track of the SPARQL endpoint
 	dict = {
 			diseasome: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
 			dailymed: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
@@ -11,6 +12,14 @@ $(function(){
 	for (property in dict) {
 		$('#datasources').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value='+ property + ' id=' + property + ' name=' + property + ' > ' + property + ' </input><br/>');
 	}
+	
+	//Auto grow input box if there's not enough room
+	$('input').autoGrowInput({ //we don't know how long the input box should be, so expand when user wants to read to the end
+	    comfortZone: 10,
+	    minWidth: 200,
+	    maxWidth: 2000
+	});
+	
 	
 	// Accordion
 	//$("#selectors").accordion({ header: "h3", autoHeight:false });
