@@ -86,24 +86,24 @@ public class endpointTest {
 	
 	 public static void main(String[] args) {
 			
-		 String keyword = "coronary artery disease";
-
-         String diseasomeQuery = Util.prefixes + " SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i') }";
-         String dailymedQuery = Util.prefixes + " SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name}";
-//         String diseasomeQuery = Util.prefixes + " SELECT * WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i') }";
-//         String dailymedQuery = Util.prefixes + " SELECT * WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name}";
-
-         ResultSet diseasomeResults = QueryExecutionFactory.sparqlService(DISEASOME_ENDPOINT,diseasomeQuery).execSelect();
-         ResultSet dailymedResults = QueryExecutionFactory.sparqlService(DAILYMED_ENDPOINT,dailymedQuery).execSelect();
-
-         //Send the results as a JSONobject
-         JSONObject jsonResp = new JSONObject();
-         
-         //JSON objects the endpoints send their values in
-         JSONObject jsonDiseasome = new JSONObject();
-         JSONObject jsonDailymed = new JSONObject();
          try{
-        	 int dieseasomeCount=0;
+			 String keyword = "coronary artery disease";
+		
+		     String diseasomeQuery = Util.prefixes + " SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i') }";
+		     String dailymedQuery = Util.prefixes + " SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name}";
+		//         String diseasomeQuery = Util.prefixes + " SELECT * WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i') }";
+		//         String dailymedQuery = Util.prefixes + " SELECT * WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name}";
+		
+		     ResultSet diseasomeResults = QueryExecutionFactory.sparqlService(DISEASOME_ENDPOINT,diseasomeQuery).execSelect();
+		     ResultSet dailymedResults = QueryExecutionFactory.sparqlService(DAILYMED_ENDPOINT,dailymedQuery).execSelect();
+		
+		     //Send the results as a JSONobject
+		     JSONObject jsonResp = new JSONObject();
+		     
+		     //JSON objects the endpoints send their values in
+		     JSONObject jsonDiseasome = new JSONObject();
+		     JSONObject jsonDailymed = new JSONObject();
+	    	 int dieseasomeCount=0;
 	         while (diseasomeResults.hasNext()){
 	 			QuerySolution diseasomeSolution = diseasomeResults.next();
 	 			jsonDiseasome.put("disease"+(dieseasomeCount++),diseasomeSolution.get("disease"));
@@ -116,10 +116,10 @@ public class endpointTest {
 	 		//	jsonDailymed.put("indication"+(dailymedCount++),dailymedSolution.get("indication"));
 	         }
 	         //Finaly add the 2 JSONObjects to the JSONObjects that we are returning to the client
-            
+	        
 	         jsonResp.put(DISEASOME_ENDPOINT, jsonDiseasome);
-             jsonResp.put(DAILYMED_ENDPOINT, jsonDailymed);
-             System.out.println(jsonResp.toString());
+	         jsonResp.put(DAILYMED_ENDPOINT, jsonDailymed);
+	         System.out.println(jsonResp.toString());
          }
          catch(Exception e){}
 	 }
