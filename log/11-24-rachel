@@ -1,0 +1,12 @@
+JSON object format:
+
+var query {
+	"Endpoint1": {"property1": {"value1": "AND"},
+							"property2": {"value 2": "OR"}
+							}
+	 	"Endpoint2": { "property1": {"value1": "AND"},
+								"property2": {"value 2": "OR"}
+								}								
+}
+
+NOTE: if the value is to be searched over all properties in the given endpoint, its property will be given as the keyword "ALL."
