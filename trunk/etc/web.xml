@@ -201,4 +201,17 @@
         <url-pattern>/GetProperties</url-pattern>
     </servlet-mapping>
 
+	<servlet>
+      <servlet-name>GetPropertyVals</servlet-name>
+      <description>
+        Testing
+      </description>
+      <servlet-class>edu.mit.querymed.services.GetPropertyVals</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetPropertyVals</servlet-name>
+        <url-pattern>/GetPropertyVals</url-pattern>
+    </servlet-mapping>
+
 </web-app>
