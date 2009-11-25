@@ -10,3 +10,18 @@ var query {
 }
 
 NOTE: if the value is to be searched over all properties in the given endpoint, its property will be given as the keyword "ALL."
+
+Sparql query: 
+
+SELECT ?disease
+WHERE {
+  ?x rdfs:label ?disease
+  FILTER (regex(?disease, "coronary artery disease", "i" ) || regex(?disease, "flu", "i"))
+ }
+
+SELECT ?ALL
+WHERE {
+  ?ALLS ?ALLP ?ALL
+  FILTER regex(?ALL, "value", "i")
+ }
+ 
