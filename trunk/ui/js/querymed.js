@@ -34,7 +34,11 @@ function searchAll(){
 		   processData: false,
 		   data: "keyword="+keyword,
 		   success: function(msg){
-				alert(msg);
+			var d = $.evalJSON(msg).dailymed;
+			var e = $.toJSON(d);
+			var f = $.evalJSON(e).name
+			alert(f);
+			
 		   }
 	});
 }
