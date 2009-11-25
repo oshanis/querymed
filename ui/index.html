@@ -1,22 +1,3 @@
-<!-- 
-<html>
-<head>
-<title>QueryMed Demo User Interface</title>
-</head>
-<body>
-Welcome to QueryMed!
-<br>
-<FORM NAME="form" ACTION="RunQuery" METHOD="GET">
-Enter a disease name: <BR>
-<INPUT TYPE="text" NAME="param" VALUE=""><P>
-<INPUT TYPE="submit" NAME="submit" Value="Search">
-</FORM>
-<br>
-</body>
-</html>
--->
-<!-- The colab version -->
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,6 +12,7 @@ Enter a disease name: <BR>
 		<script type="text/javascript" src="js/jquery.print.js"></script>
 		<script type="text/javascript" src="js/jquery.autogrow.js"></script>
 		<script type="text/javascript" src="js/jquery.autocomplete.js"></script>
+		<script type="text/javascript" src="js/jquery.json-2.2.js"></script>
 		<script type="text/javascript" src="js/tokenizer.js"></script>
 		<script type="text/javascript" src="js/util.js"></script>
 		<script type="text/javascript" src="js/querymed.js"></script>
@@ -49,7 +31,7 @@ Enter a disease name: <BR>
 </div>
 
 <p>Enter a search term to query bio-medical data sources: 
-	<input type="textbox" id="keyword" value="coronary artery disease"> 
+	<input type="textbox" id="keyword" value="coronary artery disease"/> 
 	<a href="#" onClick="searchAll()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-check"></span>Search All</a>
 </p>
 
@@ -58,18 +40,6 @@ Select from one or more of the following data sources:
 
 <form id="datasources" class="datasources">
 </form>
-
-<!--  		  
-
-<form id="datasources" class="datasources">
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="diseasome" id="diseasome" name="Diseaseome">Diseaseome (Disease Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="dailymed" id="dailymed" name="DailyMed">DailyMed (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="checkbox" value="drugbank" id="drugbank" name="Drugbank">Drugbank (Drug Info)</input><br/>
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value="linkedct" id="linkedct" name="LinkedCT">Linked Clinical Trials</input><br/>
-
-</form>
--->
-
 
 <p>
 <a href="#" onClick="addSource()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
