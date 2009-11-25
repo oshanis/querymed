@@ -14,3 +14,4 @@ WHERE {
   FILTER regex(?indication, "coronary artery disease", "i")
   ?x rdfs:label ?name
 }
+
