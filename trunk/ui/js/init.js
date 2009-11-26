@@ -72,3 +72,27 @@ $(function(){
 	);
 
 });
+
+$(document).ready(function() {
+	
+	$('#example').dataTable();
+	//Display the containers for each of the data sources once the checkbox is clicked
+	
+	showProperties();
+	$("#datasources").click(showProperties);
+
+	//This has to be initialized first. I made a mistake by trying to initialize everytime
+	//user clicks on the button
+	$("#dt_container").dialog({title: "QueryMed",
+		width: 500,
+		height: 600,
+		autoOpen: false,
+		modal: true,
+		buttons: { "Print": function(){
+						$(this).print();
+					}
+				  } 
+	});
+
+} );
+
