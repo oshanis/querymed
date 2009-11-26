@@ -29,23 +29,46 @@ function addSource(){
  */
 function searchAll(){
 	var keyword = $('#keyword').val();
-	$.ajax({
-		   url: "RunQuery",
-		   processData: false,
-		   data: "keyword="+keyword,
-		   success: function(msg){
-			var d = $.evalJSON(msg).dailymed;
-			var e = $.toJSON(d);
-			var f = $.evalJSON(e).name
-			alert(f);
-			
-		   }
-	});
+//	$.ajax({
+//		   url: "RunQuery",
+//		   processData: false,
+//		   data: "keyword="+keyword,
+//		   success: function(msg){
+//			var d = $.evalJSON(msg).dailymed;
+//			var e = $.toJSON(d);
+//			var f = $.evalJSON(e).name
+//			alert(f);
+//			
+//		   }
+//	});
+	$('#dt_container').html(createDataTable());
+	$('#example').dataTable();
+	$("#dt_container").dialog("open");
 }
 
-//This function (defined in util.js) is called when each of the data sources are clicked
-//the properties of these data sources are fetched and displayed so
-// that the user can input values for those, and restrict the query
+/*
+ * The datatable returned should be of the format used by the
+ * datatables jquery plugin 
+ */
+function createDataTable(){
+	var table = '<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">';
+	var tableHeader = '<tr>';
+	tableHeader += '<th>Col A</th>';
+	tableHeader += '<th>Col B</th>';
+	tableHeader += '</tr>';
+	var content = '<tr><td>a</td><td>b</td></tr>';
+	content += '<tr><td>aa</td><td>bb</td></tr>';
+	content += '<tr><td>aaa</td><td>bbb</td></tr>';
+	table += '<thead>' + tableHeader + '</thead>' + '<tbody>' + content + '</tbody>' + '<tfoot>' + tableHeader + '</tfoot>';
+	
+	return table;
+}
+
+/*
+ * This function (defined in util.js) is called when each of the data sources are clicked
+ * the properties of these data sources are fetched and displayed so
+ * that the user can input values for those, and restrict the query
+ */
 function showProperties(){
 
 	$('#datasources :checkbox:checked').each(function() {

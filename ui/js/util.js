@@ -19,15 +19,4 @@ function getNameFromURI(uri){
 	}
 }
 
-$(document).ready(function() {
-	
-	$('#example').dataTable();
-	//Display the containers for each of the data sources once the checkbox is clicked
-	
-	showProperties();
-//	$(":checkbox").click(showProperties);
-	$("#datasources").click(showProperties);
-
-	
-} );
 
