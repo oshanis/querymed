@@ -22,34 +22,43 @@
 
 <body>
 
-<h2 class="demoHeaders">Welcome to QueryMed!: <i>Intelligent Query Translator and RDF Data Visualizer for Biomedical Data</i></h2>
+<h2 class="demoHeaders" style="text-align:center">QueryMed</h2>
+<h3 style="text-align:center"><i>Intelligent Query Translator and RDF Data Visualizer for Biomedical Data</i></h3>
 
-<div class="intro">
+<br/>
+<br/>
 
-<h3>Directions for using the Tool:</h3>
+<table >
+  <tr>
+    <td style="text-align:right">Enter a term to query bio-medical data sources for structured information:&nbsp;&nbsp;&nbsp;
+    <br/>(e.g. coronary artery disease)&nbsp;&nbsp;&nbsp;</td>
+    <td><input type="textbox" id="keyword" value="coronary artery disease" size="50"/></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><br/>&nbsp;&nbsp;&nbsp;
+    <a href="#" onClick="searchAll()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-zoomout"></span>Query All</a> &nbsp;&nbsp;&nbsp;
+    <a href="#" onClick="searchSome()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-check"></span>Query Some</a> &nbsp;&nbsp;&nbsp;
+    <img src="images/ajax-loader.gif" id="ajax-wait-img"/>
+    </td>
+  </tr>
+</table>
 
-</div>
-
-<p>Enter a search term to query bio-medical data sources: 
-	<input type="textbox" id="keyword" value="coronary artery disease"/> 
-	<a href="#" onClick="searchAll()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-check"></span>Search All</a>
-</p>
-
-<p>		
+<div id="select-source">	
+<br/>
+<hr/>
+<br/>	
 Select from one or more of the following data sources:		  
 
 <form id="datasources" class="datasources">
 </form>
 
 <p>
-<a href="#" onClick="addSource()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add New Data Source</a>
-<br/><br/>
-<a href="#" onClick="optionclear()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span>Clear Choices</a>
+<a href="#" onClick="addSource()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add</a> &nbsp;&nbsp;&nbsp;<a href="#" onClick="optionclear()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-close"></span>Clear</a>
 </p>
 					
-   </p>
+</div>
 
-<p><i></i></p>
 
 <!-- The selectors will display the data sources the user has selected, and fetches the properties -->
 <div id="selectors">

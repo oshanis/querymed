@@ -2,6 +2,10 @@
 * QueryMed UI
 */
 
+function searchSome(){
+	$("#select-source").animate({"height": "toggle"}, { duration: 800 });
+}
+
 function optionclear(){
 	$("#datasources > input").removeAttr("checked");
 	$("#datasources :input:not(:checked)").each(function() {
@@ -26,40 +30,167 @@ function addSource(){
 
 /*
  * Executes a SPARQL query based on the keyword given in the text box
+ * The result set would be in JSON and will look like this:
+ 
+ *  NOTE: Strictly no spaces in-between!
+ *  
+ * {
+ *    "bindings":
+ *    [
+ *    	{"source" : "dailymed",
+ *    	 "uri" : "http://dailymed",
+ *    	 "vars" : ["name","indication"],
+ *    	 "count":2,
+ *    	 "results" : 
+ *    		[
+ *    			{"name": "Isosorbide (Tablet, Film Coated, Extended Release)", "indication":"Isosorbide Mononitrate ..."},
+ *    			{"name": "Altace (Capsule)", "indication":"Reduction in Risk of Myocardial Infarction..."},
+ *    		]
+ *    	}
+ *    	,
+ *    	{"source" : "diseasome",
+ *    	 "uri" : "http://diseasome",
+ *    	 "vars" : ["disease"],
+ *    	 "count":2,
+ *    	 "results" : 
+ *    		[
+ *    			{"disease": "Coronary artery disease"},
+ *    			{"disease": "Coronary artery disease, autosomal dominant, 1, 608320"}
+     		]
+ *    	}
+ *    ]
+ * }
+ *
  */
 function searchAll(){
+	
+//	var jsonObj = '{\n\
+//		  "bindings":\n\
+//			  [\n\
+//			  	{"source" : "diseasome",\n\
+//			  	 "uri" : "http://diseasome",\n\
+//			  	 "vars" : ["disease"],\n\
+//			  	 "count":2,\n\
+//			  	 "results" : \n\
+//			  		[\n\
+//			  			{"disease": "disease1"},\n\
+//			  			{"disease": "disease2"}\n\
+//			     		]\n\
+//			  	}\n\
+//			  	,\n\
+//			  	{"source" : "dailymed",\n\
+//				  	 "uri" : "http://dailymed",\n\
+//				  	 "vars" : ["name","indication","treatment"],\n\
+//				  	 "count":3,\n\
+//				  	 "results" : \n\
+//				  		[\n\
+//				  		 {"name":"name1","indication":"indication1", "treatment" : "treatment1" },\n\
+//				  		 {"name":"name2","indication":"indication2", "treatment" : "treatment2"},\n\
+//				  		 {"name":"name3","indication":"indication3", "treatment" : "treatment3"},\n\
+//				  		]\n\
+//				  	}\n\
+//			  ]\n\
+//		}';
+
+	$("#ajax-wait-img").show();
 	var keyword = $('#keyword').val();
-//	$.ajax({
-//		   url: "RunQuery",
-//		   processData: false,
-//		   data: "keyword="+keyword,
-//		   success: function(msg){
-//			var d = $.evalJSON(msg).dailymed;
-//			var e = $.toJSON(d);
-//			var f = $.evalJSON(e).name
-//			alert(f);
-//			
-//		   }
-//	});
-	$('#dt_container').html(createDataTable());
-	$('#example').dataTable();
-	$("#dt_container").dialog("open");
+	$.ajax({
+		   url: "RunQuery",
+		   processData: false,
+		   data: "keyword="+keyword,
+		   success: function(jsonObj){
+
+				$("#ajax-wait-img").hide();
+				//This loop is for all the endpoints that were queried
+
+				var html = "";
+				
+				for (var i in $.evalJSON(jsonObj).bindings){
+					
+					var source = $.evalJSON(jsonObj).bindings[i].source;
+
+					html += "<a href='#"+source+"'><h2>"+source+"</h2></a>";
+
+					var vars = $.evalJSON(jsonObj).bindings[i].vars;
+					var data = new Array($.evalJSON(jsonObj).bindings[i].count);
+					
+					
+					for (var j in $.evalJSON(jsonObj).bindings[i].results){
+						
+						data[j] = new Array(vars.length);
+						
+						var resultObj = $.evalJSON(jsonObj).bindings[i].results[j];
+						var resultStr = ($.toJSON(resultObj)).toString();
+						
+						//The following is a hack because, JSON does not allow to dynamically find the value for a property obtained from a variable
+						//Assumption: the properties are in order
+						var tokens = resultStr.tokenize(":", " ", true); //converts the comma seperated string into an array
+						
+						//Because of the nature of the JSON object we can always guarantee that the number 
+						//of tokens is >= 2. 
+						for (var t=1; t<tokens.length-1; t++){
+							var tokenLen = tokens[t].length;
+							for (var k in vars){
+								var varLen = vars[k].length;
+								//alert("token = "+tokens[t]+"\tlength = "+tokenLen+"\nvar = "+vars[k]+"\tlength = "+varLen+"\nsubStr = "+tokens[t].substr(tokenLen-varLen-1,varLen)+"\nsubStr matched = "+(tokens[t].substr(tokenLen-varLen-1,varLen) == vars[k]));
+								if (tokens[t].substr(tokenLen-varLen-1,varLen) == vars[k]){
+									tokens[t] = tokens[t].substr(1,tokenLen-varLen-5); //The -3 is to account for the trailing "s(quote signs), parenthesis, and the comma inbetween 
+								}
+							}
+						}
+						//Remove the parenthesis and the commas of last element:
+						var lastIndex = tokens.length-1;
+						var lastTokenLen = tokens[lastIndex].length;
+						tokens[lastIndex] = tokens[lastIndex].substr(1,lastTokenLen-3);
+						
+						//Add the values to the data matrix, so that we can build the table
+						for (var t=1; t<tokens.length; t++){
+							data[j][t-1] = tokens[t]; 
+						}
+						
+					}
+
+					html += createDataTable(vars, data);
+
+				}
+
+				$('#dt_container').html(html);
+				$("#dt_container").dialog("open");
+				//@@TODO: I dunno why the last column is always smaller than the others - try to find a fix
+				$('.dataTable').dataTable();
+				$('.dataTable').css("width", "100%");
+				
+		   }
+	});
+
 }
 
 /*
  * The datatable returned should be of the format used by the
  * datatables jquery plugin 
  */
-function createDataTable(){
-	var table = '<table cellpadding="0" cellspacing="0" border="0" class="display" id="example">';
+function createDataTable(headers, data){
+	
+	var table = '<table cellpadding="0" cellspacing="0" border="0" class="display dataTable">';
+	
 	var tableHeader = '<tr>';
-	tableHeader += '<th>Col A</th>';
-	tableHeader += '<th>Col B</th>';
+	for (var i=0; i<headers.length; i++){
+		tableHeader += '<th>'+headers[i]+'</th>';
+	}
 	tableHeader += '</tr>';
-	var content = '<tr><td>a</td><td>b</td></tr>';
-	content += '<tr><td>aa</td><td>bb</td></tr>';
-	content += '<tr><td>aaa</td><td>bbb</td></tr>';
-	table += '<thead>' + tableHeader + '</thead>' + '<tbody>' + content + '</tbody>' + '<tfoot>' + tableHeader + '</tfoot>';
+	
+	var content = '';
+	for (var i=0; i<data.length; i++){
+		content += '<tr>';
+		for (var j=0; j<data[i].length; j++){
+			content += '<td>'+data[i][j]+'</td>';
+//			content += '<td>'+data[i][j].substr(0,20)+'</td>';
+		}
+		content += '</tr>';
+	}
+	
+	table += '<thead>' + tableHeader + '</thead>' + '<tbody>' + content + '</tbody>' + '<tfoot>' + tableHeader + '</tfoot></table>';
+	
 	
 	return table;
 }
@@ -167,402 +298,3 @@ function addDialog(title, info){
 	    } 
 	  });
 }
-
-//@@ REMOVE THESE LATER
-//OLD CODE FROM COLAB
-
-var a; //this is the only global variable in this program
-		//it denotes an assesment object
-
-var init_called = false;
-
-function Assessment(init_data){
-	
-	this.population = init_data[0];
-	this.median_age = init_data[1];
-	this.median_income = init_data[2];
-	this.poverty_rate = init_data[3];
-	this.racial_makeup = init_data[4];
-	this.immigration_rate = init_data[5];
-	this.language_makeup = init_data[6];
-	
-	this.c2 = "";
-	this.o1 = "";
-	this.o2 = "";
-	this.o3 = "";
-	this.o4 = "";
-	this.o5 = "";
-	this.o6 = "";
-	
-	
-	this.isset = false;
-	this.setCount = 0;
-	
-	this.setValues =  function(variable, value){
-		switch(variable){
-			case "c2": this.c2 = value; this.isset = true; this.setCount++; break;
-			case "o1": this.o1 = value; this.isset = true; this.setCount++; break;
-			case "o2": this.o2 = value; this.isset = true; this.setCount++; break;
-			case "o3": this.o3 = value; this.isset = true; this.setCount++; break;
-			case "o4": this.o4 = value; this.isset = true; this.setCount++; break;
-			case "o5": this.o5 = value; this.isset = true; this.setCount++; break;
-			case "o6": this.o6 = value; this.isset = true; this.setCount++; break;
-		}
-	}
-	
-	this.getValue = function(variable){
-		switch(variable){
-			case "c2": return this.c2; break;
-			case "o1": return this.o1; break;
-			case "o2": return this.o2; break;
-			case "o3": return this.o3; break;
-			case "o4": return this.o4; break;
-			case "o5": return this.o5; break;
-			case "o6": return this.o6; break;
-		}	
-	}
-	
-	
-	this.getAllSetVals = function(){
-		var arr = new Array();
-		if (this.c2!=""){
-			arr['c2'] = this.c2;
-		}
-		if (this.o1!=""){
-			arr['o1'] = this.o1;
-		}
-		if (this.o2!=""){
-			arr['o2'] = this.o2;
-		}
-		if (this.o3!=""){
-			arr['o3'] = this.o3;
-		}
-		if (this.o5!=""){
-			arr['o5'] = this.o5;
-		}
-		if (this.o6!=""){
-			arr['o6'] = this.o6;
-		}
-		return arr;
-	}
-}
-
-
-function addErrorDialog(choice){
-	var msg = '<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span> No choices selected for '+choice+'!</p>';
-	$("#container").html(msg);
-	$("#container").dialog({ 	title: "Error",
-						    	dialogClass: 'alert',
-						   		buttons: {"OK": function(){$(this).dialog("close");}}
-						   });
-
-}
-
-function getInfoBox(){
-		
-	var infobox = "<p><div id='infobox'><br/><h3>&nbsp;&nbsp;&nbsp;Demographic Information</h3>";
-	if (a.population != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Population</b> : " + a.population + "<br/>";
-	if (a.median_age != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Median Age</b> : " + a.median_age + "<br/>";
-	if (a.median_income != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Median Income</b> : " + a.median_income + "<br/>";
-	if (a.poverty_rate != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Poverty Rate</b> : " + a.poverty_rate + "<br/>";
-	if (a.racial_makeup != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Racial Makeup</b> : " + a.racial_makeup + "<br/>";
-	if (a.immigration_rate != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Immigration Rate</b> : " + a.immigration_rate + "<br/>";
-	if (a.language_makeup != "") infobox += "&nbsp;&nbsp;&nbsp;<b>Language Makeup</b> : " + a.language_makeup + "<br/>";
-	infobox += "<br/>";
-
-	var prevousFunding = "";
-	if (registerResponse("o4")){
-		 prevousFunding = a.o4;
-		 infobox += "<br/><h3>&nbsp;&nbsp;&nbsp;Previous Programs</h3><ul>";
-		 
-		 var answers = $("#o4").find("input[type=checkbox][checked]"); //not just the immediate children, but also finds the descendents
-		 answers.each(function() {
-		     infobox += "<li>" + $(this).val() + "</li>";	   
-		   }
-		   );
-		 infobox += "</ul>"
-	}
-	infobox += "<br/></div></p><br/>";
-
-	return infobox;
-}
-
-function addResultsDialog(title, question, data){
-	
-	var infobox = getInfoBox();
-	$('#dt_container').html(infobox + "<h3>" + title + ":</h3><br/>" + data);
-	$('#example').dataTable();
-	$("#dt_container").dialog({ 	title: title,
-					width: 1000,
-					height: 800,
-					buttons: { "Ok": function() {
-									$(this).dialog("close"); 
-									$(this).dialog("destroy");
-									$(this).empty();
-									},
-								"Print": function(){
-									$(this).print();
-								}
-							  } 
-				});
-
-	
-}
-
-$.clientCoords = function() {
-     var dimensions = {width: 0, height: 0};
-     if (document.documentElement) {
-         dimensions.width = document.documentElement.offsetWidth;
-         dimensions.height = document.documentElement.offsetHeight;
-     } else if (window.innerWidth && window.innerHeight) {
-         dimensions.width = window.innerWidth;
-         dimensions.height = window.innerHeight;
-     }
-     return dimensions;
-}
-
-/**
-* This function is the inializing function that populates the Assessment function.
-* it needs to be called in every method that accesses this object
-*/
-function initialize(){
-	var init_data = new Array();
-	init_data[0] = $("#population").val();
-	init_data[1] = $("#median_age").val();
-	init_data[2] = $("#median_income").val();
-	init_data[3] = $("#poverty_rate").val();
-	init_data[4] = $("#racial_makeup").val();
-	init_data[5] = $("#immigration_rate").val();
-	init_data[6] = $("#language_makeup").val();
-	
-	a = new Assessment(init_data);
-	init_called = true;
-	return init_data;
-
-}
-
-/**
-* Registers the reposnse in the Assessment object and returns true or false depending whether responses were selected or not 
-*/
-function registerResponse(question){
-	var result = new Array();
-	c = 0;
-	var answers = $("#" + question).find("input[type=checkbox][checked]"); //not just the immediate children, but also finds the descendents
-	answers.each(function() {
-					result[c++] = $(this).val();	   
-					}
-				  );
-	a.setValues(question,result);
-	if (result.length < 1) return false;
-	else return true;
-
-}
-
-function c1(){
-	var init_data = initialize();
-	
-	addDialog("Success", "The demographic data: "+init_data + " was successfully added to the Asssessment Profile.");
-}
-
-function c2(){
-	if (!init_called)
-		initialize();
-	if (registerResponse("c2")){
-		$.ajax({
-   			type: "GET",
-   			url: "http://people.csail.mit.edu/oshani/colab/db/c2.php",
-   			data: "c2="+a.c2,
-   			success: function(data){
-				addResultsDialog("Programs that fit based on Use", "c2" ,data);
-   			}
- 		});
-	}
-	else {
-		addErrorDialog("C2");	
-	}
-}
-
-function o1(){
-	if (!init_called)
-		initialize();
-	if (registerResponse("o1")){
-		$.ajax({
-   			type: "GET",
-   			url: "http://people.csail.mit.edu/oshani/colab/db/o1.php",
-   			data: "o1="+a.o1,
-   			success: function(data){
-				addResultsDialog("Programs that fit based on the Type of Entity", "o1" ,data);
-   			}
- 		});
-	}
-	else {
-		addErrorDialog("O2");	
-	}
-}
-
-function o2(){
-	if (!init_called)
-		initialize();
-	if (registerResponse("o2")){
-		$.ajax({
-   			type: "GET",
-   			url: "http://people.csail.mit.edu/oshani/colab/db/o2.php",
-   			data: "o2="+a.o2,
-   			success: function(data){
-				addResultsDialog("Programs that fit based on the Mission", "o2" ,data);
-   			}
- 		});
-	}
-	else {
-		addErrorDialog("O2");	
-	}
-}
-
-function o3(){
-	if (!init_called)
-		initialize();
-	if (registerResponse("o3")){
-		$.ajax({
-   			type: "GET",
-   			url: "http://people.csail.mit.edu/oshani/colab/db/o3.php",
-   			data: "o3="+a.o3,
-   			success: function(data){
-				addResultsDialog("Programs that fit based on the Active Programs in the Organization", "o3" ,data);
-   			}
- 		});
-	}
-	else {
-		addErrorDialog("O3");	
-	}}
-
-function o4(){
-	if (!init_called)
-		initialize();
-	registerResponse("o4");
-
-	addDialog("Success","Previous Programs Added");
-}
-
-function o5(){
-	if (!init_called)
-		initialize();
-	if (registerResponse("o5")){
-		$.ajax({
-   			type: "GET",
-   			url: "http://people.csail.mit.edu/oshani/colab/db/o5.php",
-   			data: "o5="+a.o5,
-   			success: function(data){
-				addResultsDialog("Programs that fit based on the Type", "o5" ,data);
-   			}
- 		});
-	}
-	else {
-		addErrorDialog("O5");	
-	}	
-}
-
-function o6(){
-	if (!init_called)
-		initialize();
-	if (registerResponse("o6")){
-		$.ajax({
-   			type: "GET",
-   			url: "http://people.csail.mit.edu/oshani/colab/db/o6.php",
-   			data: "o6="+a.o6,
-   			success: function(data){
-				addResultsDialog("Programs that fit based on the Eligible Entities or Sub Entities", "o6" ,data);
-   			}
- 		});
-	}
-	else {
-		addErrorDialog("O1");	
-	}	
-}
-
-function getAssesment(){
-	if (!init_called)
-		initialize();
-	
-	var isAnyVarSet = false;
-	if (registerResponse("c2")) isAnyVarSet = true;
-	if (registerResponse("o1")) isAnyVarSet = true;
-	if (registerResponse("o2")) isAnyVarSet = true;
-	if (registerResponse("o3")) isAnyVarSet = true;
-	if (registerResponse("o5")) isAnyVarSet = true;
-	if (registerResponse("o6")) isAnyVarSet = true;
-
-	if (isAnyVarSet){
-	  var tosend = "c2="+a.c2+"&o1="+a.o1+"&o2="+a.o2+"&o3="+a.o3+"&o5="+a.o5+"&o6="+a.o6;
-	  var allSet = a.getAllSetVals();
-	  var title = "Programs that fit based on the Choices Supplied for ";
-	  var c = 1;
-	  for (var i in allSet){
-	    if (c++ != a.setCount)
-	      title += i +" , ";
-	    else
-	      title += i;
-	  }
-	  $.ajax({
-	    type: "GET",
-		url: "http://people.csail.mit.edu/oshani/colab/db/all.php",
-		data: tosend,
-		success: function(data){
-		//alert(data);
-		addResultsDialog("Programs that fit", "" ,data);
-	      }
-	    });
-	  }
-	else{
-	  addDialog("Error", "No response has been added");
-	}
-}
-
-function c1_clear(){
-	$("#c1")[0].reset();
-}
-
-function c2_clear(){
-	$("#c2")[0].reset();
-
-}
-
-function o1_clear(){
-	$("#o1")[0].reset();
-}
-
-function o2_clear(){
-	$("#o2")[0].reset();
-}
-
-function o3_clear(){
-	$("#o3")[0].reset();	
-}
-
-function o4_clear(){
-	$("#o4")[0].reset();	
-}
-
-function o5_clear(){
-	$("#o5")[0].reset();	
-}
-
-function o6_clear(){
-	$("#o6")[0].reset();
-}
-
-function all_clear(){
-	//Clear all the forms of their values
-	c1_clear();
-	c2_clear();
-	o1_clear();
-	o2_clear();
-	o3_clear();
-	o4_clear();
-	o5_clear();
-	o6_clear();
-	
-	//Reset all the variables to their default values
-	init_called = false;
-	initialize();
-}
-

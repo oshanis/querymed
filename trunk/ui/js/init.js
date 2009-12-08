@@ -2,6 +2,9 @@ var dict;
 
 $(function(){
 
+	$("#select-source").hide();
+	$("#ajax-wait-img").hide();
+	
 	//Data structure to keep track of the SPARQL endpoint
 	dict = {
 			diseasome: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
@@ -84,8 +87,8 @@ $(document).ready(function() {
 	//This has to be initialized first. I made a mistake by trying to initialize everytime
 	//user clicks on the button
 	$("#dt_container").dialog({title: "QueryMed",
-		width: 500,
-		height: 600,
+		width: 1200,
+		height: 700,
 		autoOpen: false,
 		modal: true,
 		buttons: { "Print": function(){
