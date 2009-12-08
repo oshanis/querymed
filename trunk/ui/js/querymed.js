@@ -196,7 +196,7 @@ function createDataTable(headers, data){
 }
 
 /*
- * This function (defined in util.js) is called when each of the data sources are clicked
+ * This function (defined in init.js) is called when each of the data sources are clicked
  * the properties of these data sources are fetched and displayed so
  * that the user can input values for those, and restrict the query
  */
@@ -206,7 +206,7 @@ function showProperties(){
 		
 		if ($('#selectors').find('#'+$(this).val()).length == 0){
 	
-		    /** SourceDiv hould look like this:
+		    /** SourceDiv should look like this:
 		    <div id="diseasome">
 			<h3><a href="#">Diseasome</a></h3>
 			<p>Search by property: <input type="textbox" id="property" value=""></p>
