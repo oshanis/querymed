@@ -2,6 +2,7 @@ package edu.mit.querymed.services;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.sparql.lib.org.json.JSONArray;
 import com.hp.hpl.jena.sparql.lib.org.json.JSONObject;
 
 public class RunQuery extends HttpServlet{
@@ -41,33 +43,102 @@ public class RunQuery extends HttpServlet{
             
             //Send the results as a JSONobject
             JSONObject jsonResp = new JSONObject();
+
+            /**
+             * The structure of jsonResp looks like the following: 
+			 * {
+			 *    "bindings":
+			 *    [
+			 *    	{"source" : "dailymed",
+			 *    	 "uri" : "http://dailymed",
+			 *    	 "vars" : ["name","indication"],
+			 *    	 "count":2,
+			 *    	 "results" : 
+			 *    		[
+			 *    			{"name": "Isosorbide (Tablet, Film Coated, Extended Release)", "indication":"Isosorbide Mononitrate ..."},
+			 *    			{"name": "Altace (Capsule)", "indication":"Reduction in Risk of Myocardial Infarction..."},
+			 *    		]
+			 *    	}
+			 *    	,
+			 *    	{"source" : "diseasome",
+			 *    	 "uri" : "http://diseasome",
+			 *    	 "vars" : ["disease"],
+			 *    	 "count":2,
+			 *    	 "results" : 
+			 *    		[
+			 *    			{"disease": "Coronary artery disease"},
+			 *    			{"disease": "Coronary artery disease, autosomal dominant, 1, 608320"}
+			 *   		]
+			 *    	}
+			 *    ]
+			 * }
+			 *
+             */
             
-            //JSON objects the endpoints send their values in
+	          JSONArray array = new JSONArray();
+	            
+            //Start of diseasome
+            
             JSONObject jsonDiseasome = new JSONObject();
-            JSONObject jsonDailymed = new JSONObject();
-	       	
-            int dieseasomeCount=0;
-	        
-            while (diseasomeResults.hasNext()){
+            jsonDiseasome.put("source", "diseasome");
+            jsonDiseasome.put("uri", DISEASOME_ENDPOINT);
+            JSONArray diseasomeVars = new JSONArray();
+            List<String> diseasomeResultVars = diseasomeResults.getResultVars();
+		     for (String val : diseasomeResultVars){
+		    	 diseasomeVars.put(val);
+		     }
+		     jsonDiseasome.put("vars", diseasomeVars);
+		     int diseasomeCount=0;
+		     JSONArray diseasomeResultArr = new JSONArray();
+		     while (diseasomeResults.hasNext()){
 	 			QuerySolution diseasomeSolution = diseasomeResults.next();
-	 			jsonDiseasome.put("disease"+(dieseasomeCount++),diseasomeSolution.get("disease"));
+	 			JSONObject j = new JSONObject();
+	            for (String val : diseasomeResultVars){
+	               	String s = diseasomeSolution.get(val).toString().replaceAll(":", "-");
+			        j.put(val,s);
+	 			}
+	            diseasomeResultArr.put(j);
+	 			diseasomeCount++;
 	 		}
-	
-	        int dailymedCount=0;
-//	        while (dailymedResults.hasNext()){
-//	 			QuerySolution dailymedSolution = dailymedResults.next();
-//	 			jsonDailymed.put("name"+(dailymedCount++),dailymedSolution.get("name"));
-//	 			jsonDailymed.put("indication"+(dailymedCount++),dailymedSolution.get("indication"));
-//	        }
-	        while (dailymedResults.hasNext()){
+	        jsonDiseasome.put("results",diseasomeResultArr);
+	        jsonDiseasome.put("count",diseasomeCount);
+	        
+	        //End of diseasome
+            
+
+            //Start of dailymed
+            
+            JSONObject jsonDailymed = new JSONObject();
+            jsonDailymed.put("source", "dailymed");
+            jsonDailymed.put("uri", DAILYMED_ENDPOINT);
+            JSONArray dailymedVars = new JSONArray();
+            List<String> dailymedResultVars = dailymedResults.getResultVars();
+		     for (String val : dailymedResultVars){
+		    	 dailymedVars.put(val);
+		     }
+		     jsonDailymed.put("vars", dailymedVars);
+		     int dailymedCount=0;
+		     JSONArray dailymedResultArr = new JSONArray();
+		     while (dailymedResults.hasNext()){
 	 			QuerySolution dailymedSolution = dailymedResults.next();
-	 			jsonDailymed.put("name",dailymedSolution.get("name"));
-//	 			jsonDailymed.put("indication",dailymedSolution.get("indication"));
-	        }
-	         
-	         //Finaly add the 2 JSONObjects to the JSONObjects that we are returning to the client
-         	//jsonResp.put("diseasome", jsonDiseasome);
-            jsonResp.put("dailymed", jsonDailymed);
+	 			JSONObject j = new JSONObject();
+	            for (String val : dailymedResultVars){
+	            	String s = dailymedSolution.get(val).toString().replaceAll(":", "-");
+	            	j.put(val,s);
+	 			}
+	            dailymedResultArr.put(j);
+	 			dailymedCount++;
+	 		}
+	        jsonDailymed.put("results",dailymedResultArr);
+	        jsonDailymed.put("count",dailymedCount);
+	        
+	        //End of diseasome
+
+	        array.put(jsonDiseasome);
+	        array.put(jsonDailymed);
+	        
+	        jsonResp.put("bindings", array);
+            
             out.write(jsonResp.toString());
     	} 
     	catch (Exception e) {
