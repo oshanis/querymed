@@ -25,3 +25,13 @@ WHERE {
   FILTER regex(?ALL, "value", "i")
  }
  
+ 
+ SELECT ?disease
+WHERE {
+  {?x rdfs:label ?disease
+  FILTER (regex(?disease, "coronary artery disease", "i" ))}
+  UNION
+  ?x sameas sdsdsd .
+  
+ }
+ 

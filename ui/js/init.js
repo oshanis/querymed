@@ -5,15 +5,23 @@ $(function(){
 	$("#select-source").hide();
 	$("#ajax-wait-img").hide();
 	
+//	//Data structure to keep track of the SPARQL endpoint
+//	dict = {
+//			diseasome: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
+//			dailymed: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
+//			drugbank: "http://www4.wiwiss.fu-berlin.de/drugbank/sparql",
+//			linkedct:"http://linkedct.org/sparql"
+//		};
+
 	//Data structure to keep track of the SPARQL endpoint
 	dict = {
 			diseasome: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
 			dailymed: "http://www4.wiwiss.fu-berlin.de/diseasome/sparql",
-			drugbank: "http://www4.wiwiss.fu-berlin.de/drugbank/sparql",
-			linkedct:"http://linkedct.org/snorql/index.html"
+			drugbank: "http://www4.wiwiss.fu-berlin.de/drugbank/sparql"
 		};
+
 	for (property in dict) {
-		$('#datasources').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value='+ property + ' id=' + property + ' name=' + property + ' > ' + property + ' </input><br/>');
+		$('#datasources').append('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <input type="checkbox" value='+ property + ' id=' + property + ' name=' + property + ' >' + property + ' </input><br/>');
 	}
 	
 	//Auto grow input box if there's not enough room

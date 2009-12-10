@@ -92,18 +92,25 @@ public class Translator {
 			Endpoint e = new Endpoint("", endpoints[i]);
 			Query q = new Query(e, sbQuery.toString());
 			queries.add(q);
-			System.out.println(sbQuery.toString());
+	//		System.out.println(sbQuery.toString());
 		}
 	}
+	
 	/*return a list of Queries corresponding to the queries we must run.*/
 	public ArrayList<Query> getQueries() {		
 		return this.queries;
 	}
+	
 	public static void main(String[] args){
 		String s1 = "{\"Endpoint1\": {\"property11\": {\"cardiac\": \"AND\"}, \"property12\": {\"arrest\": \"OR\"}}, \"Endpoint2\": {\"property21\": {\"value21\" : \"AND\"}, \"property22\": {\"value22\": \"OR\"}}} ";
 		String s2 = "{\"Endpoint1\": {\"ALL\": {\"cardiac\": \"null\"}}}";
 		try {
 			Translator t = new Translator(s1);
+			ArrayList<Query> qs = t.getQueries();
+			for (Query q : qs){
+				System.out.println(q.getQuery());
+			}
+			
 		}
 		catch (JSONException e) {System.err.println(e);}
 	}

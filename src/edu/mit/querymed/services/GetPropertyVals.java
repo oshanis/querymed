@@ -58,21 +58,23 @@ public class GetPropertyVals  extends HttpServlet{
             
             while (results.hasNext()){
     			QuerySolution s = results.next();
-    			if (s.get("o").isLiteral()){
-    				System.out.println("literal");
-    				String dataType = s.getLiteral("o").getDatatype().getURI();
-    				if (dataType.equals("http://www.w3.org/2001/XMLSchema#int")){
-    					responseStr += s.getLiteral("o").getInt() + ",";	
-    				}
-    				
-    			}
-    			if (s.get("o").isAnon()) {
-    				//I dunno what to do here
-    				System.out.println("@@TODO: Handle anon case!");
-    			}
-    			if (s.get("o").isResource()){
-    				responseStr += s.getResource("o").getURI() + ",";
-    			}
+    			responseStr += s.get("o");
+    			responseStr += ",";
+
+//    			if (s.get("o").isLiteral()){
+//    				String dataType = s.getLiteral("o").getDatatype().getURI();
+//    				if (dataType.equals("http://www.w3.org/2001/XMLSchema#int")){
+//    					responseStr += s.getLiteral("o").getInt() + ",";	
+//    				}
+//    				
+//    			}
+//    			if (s.get("o").isAnon()) {
+//    				//I dunno what to do here
+//    				System.out.println("@@TODO: Handle anon case!");
+//    			}
+//    			if (s.get("o").isResource()){
+//    				responseStr += s.getResource("o").getURI() + ",";
+//    			}
     			
     		}
             out.write(responseStr);
