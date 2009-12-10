@@ -18,6 +18,13 @@ public class Util {
 	"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
 	"PREFIX dailymed: <http://www4.wiwiss.fu-berlin.de/dailymed/resource/dailymed/>";
 	
+	//Default endpoints we have
+	public static String DISEASOME_ENDPOINT = "http://www4.wiwiss.fu-berlin.de/diseasome/sparql";
+	public static String DAILYMED_ENDPOINT = "http://www4.wiwiss.fu-berlin.de/dailymed/sparql";
+	public static String DRUGBANK_ENDPOINT = "http://www4.wiwiss.fu-berlin.de/drugbank/sparql";
+	public static String LINKEDCT_ENDPOINT = "http://linkedct.org/sparql";
+	public static String PUBMED_ENDPOINT = "";
+	
 	public void addPrefix(String prefix, String uri){
 		prefixes += "PREFIX " + prefix + ": <" + uri + "> ";
 	}

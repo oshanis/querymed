@@ -17,9 +17,6 @@ public class RunQuery extends HttpServlet{
 	
 	private static final long serialVersionUID = 2991523997146964023L;
 	
-	//Default endpoints we have
-	public String DISEASOME_ENDPOINT = "http://www4.wiwiss.fu-berlin.de/diseasome/sparql";
-	public String DAILYMED_ENDPOINT = "http://www4.wiwiss.fu-berlin.de/dailymed/sparql";
 	
 	public void doGet(HttpServletRequest req,
             HttpServletResponse resp)
@@ -28,12 +25,34 @@ public class RunQuery extends HttpServlet{
     	try {
  
     		String keyword = req.getParameter("keyword");
-    		
-            String diseasomeQuery = Util.prefixes + " SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i') }";
-            String dailymedQuery = Util.prefixes + " SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name}";
 
-            ResultSet diseasomeResults = QueryExecutionFactory.sparqlService(DISEASOME_ENDPOINT,diseasomeQuery).execSelect();
-            ResultSet dailymedResults = QueryExecutionFactory.sparqlService(DAILYMED_ENDPOINT,dailymedQuery).execSelect();
+//            String diseasomeQuery = Util.prefixes + " SELECT ?disease ?possibleDrug ?associatedGene  ?class ?degree ?size ?classDegree "+
+//            	" WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i')."+
+//            	" ?x diseasome:associatedGene ?associatedGene."+
+//              	" ?x diseasome:possibleDrug ?possibleDrug."+
+//              	" ?x diseasome:degree ?degree ."+
+//              	" ?x diseasome:size ?size ."+
+//              	" ?x diseasome:classDegree ?classDegree."+
+//              	" ?x diseasome:class ?class."+
+//            	" }";
+//
+//            String dailymedQuery = Util.prefixes + " SELECT ?name ?indication  ?precaution ?routeOfAdministration ?adverseReaction"+
+//            	" WHERE {?x dailymed:indication ?indication. FILTER regex(?indication, '" + keyword +"', 'i')"+
+//            	" ?s rdfs:label ?name+" +
+//            	" ?x dailymed:routeOfAdministration ?routeOfAdministration." +
+//              	" ?x dailymed:precaution ?precaution." +
+//              	" ?x dailymed:adverseReaction ?adverseReaction." +
+//            	" }";
+
+
+          String diseasomeQuery = Util.prefixes + " SELECT distinct ?class ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i'). ?x diseasome:possibleDrug ?possibleDrug.  ?x diseasome:class ?class.}";
+          String dailymedQuery = Util.prefixes + " SELECT distinct ?name ?indication ?routeOfAdministration ?precaution WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name. ?x dailymed:routeOfAdministration ?routeOfAdministration. ?x dailymed:precaution ?precaution.}";
+
+//            String diseasomeQuery = Util.prefixes + " SELECT ?disease WHERE {?x rdfs:label ?disease FILTER regex(?disease, '" + keyword  + "', 'i') }";
+//            String dailymedQuery = Util.prefixes + " SELECT ?name ?indication WHERE {?x dailymed:indication ?indication FILTER regex(?indication, '" + keyword +"', 'i') ?x rdfs:label ?name}";
+
+            ResultSet diseasomeResults = QueryExecutionFactory.sparqlService(Util.DISEASOME_ENDPOINT,diseasomeQuery).execSelect();
+            ResultSet dailymedResults = QueryExecutionFactory.sparqlService(Util.DAILYMED_ENDPOINT,dailymedQuery).execSelect();
 
             // The following generates a page showing all the request parameters
             PrintWriter out = resp.getWriter();
@@ -81,7 +100,7 @@ public class RunQuery extends HttpServlet{
             
             JSONObject jsonDiseasome = new JSONObject();
             jsonDiseasome.put("source", "diseasome");
-            jsonDiseasome.put("uri", DISEASOME_ENDPOINT);
+            jsonDiseasome.put("uri", Util.DISEASOME_ENDPOINT);
             JSONArray diseasomeVars = new JSONArray();
             List<String> diseasomeResultVars = diseasomeResults.getResultVars();
 		     for (String val : diseasomeResultVars){
@@ -110,7 +129,7 @@ public class RunQuery extends HttpServlet{
             
             JSONObject jsonDailymed = new JSONObject();
             jsonDailymed.put("source", "dailymed");
-            jsonDailymed.put("uri", DAILYMED_ENDPOINT);
+            jsonDailymed.put("uri", Util.DAILYMED_ENDPOINT);
             JSONArray dailymedVars = new JSONArray();
             List<String> dailymedResultVars = dailymedResults.getResultVars();
 		     for (String val : dailymedResultVars){

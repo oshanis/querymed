@@ -214,4 +214,17 @@
         <url-pattern>/GetPropertyVals</url-pattern>
     </servlet-mapping>
 
+	<servlet>
+      <servlet-name>GetSelected</servlet-name>
+      <description>
+        Testing
+      </description>
+      <servlet-class>edu.mit.querymed.services.GetSelected</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetSelected</servlet-name>
+        <url-pattern>/GetSelected</url-pattern>
+    </servlet-mapping>
+
 </web-app>

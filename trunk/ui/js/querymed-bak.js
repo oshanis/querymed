@@ -235,37 +235,45 @@ function showProperties(){
 					var propertyoptions = sourcename + "_options";
 					var propertyoptionsid = "#" + propertyoptions;
 					$(sourceid).html("");
-					$(sourceid).append('Add values to the relevant properties:<br/><i>Use <b>FILTER</b> if you do not know the exact value for the property.<br/>Use <b>AND</b> or <b>OR</b> to specify whether this property value pair will be conjuncted or disjuncted with the query term you specified above.<br/><br/></i>');
+					$(sourceid).append('Add values to the relevant properties:<br/><br/>');
+					$(sourceid).append('<select id="'+propertyoptions+'"></select>');
 					var tokens = msg.tokenize(",", " ", true); //converts the comma seperated string into an array
-					$(sourceid).append("<table>");
-					$.each(tokens, function(val, p) {
-						$(sourceid).append("<tr><td><a href='"+p+"'>"+getNameFromURI(p)+"</td><td style='text-align:left' ><input id="+getNameFromURI(p)+" type='text' size='30' value=''/></td><td><form><input type='checkBox' value='FILTER'>FILTER</input>&nbsp;&nbsp;&nbsp;<input type='radio' value='AND'>AND</input><input type='radio' value='OR'>OR</input></form></td></tr>");
-						
-						//This Auto-completion code does not work! :(
-//						var textboxid = "#"+getNameFromURI(p);
-//						//Once the textbox gets the focus fetch all the property values from the SPARQL endpoint and display
-//						$(textboxid).click(function(){
-//							$.ajax({
-//							   url: "GetPropertyVals",
-//							   processData: false,
-//							   data: "service="+dict[option]+"&property="+p,
-//							   success: function(msg){
-//									//@@TODO: Fix the CSS
-//									var data = msg.tokenize(",", " ", true);  //converts the comma seperated string into an array
-////									for (var i=0; i<data.length; i++){
-////										data[i] = getNameFromURI(data[i]);
-////									}
-//									data = "aaa bbb ccc";
-//									$(textboxid).autocomplete(data);
-////									$(textboxid).val(data);
-//
-//							   }
-//							});
-//						});
+					$.each(tokens, function(val, text) {
+
+						$(propertyoptionsid).append(
+								//getNameFromURI(text) is defined in util.js
+								$('<option></option>').val(text).html(getNameFromURI(text))
+						);
 					});
 					
-					$(sourceid).append("</table>");
-					
+					$(propertyoptionsid).change(function(){
+						
+						var propertyValue = getNameFromURI($(this).val());
+						var propertyValueId = "#" + propertyValue;
+						$(sourceid).append('&nbsp;&nbsp;&nbsp;<input id="'+propertyValue+'" type="text" value=""/>');
+						$('input#propname').autoGrowInput({ //we don't know how long the input box should be, so expand when user wants to read to the end
+						    comfortZone: 10,
+						    minWidth: 200,
+						    maxWidth: 2000
+						});
+//						$.ajax({
+//							   url: "GetPropertyVals",
+//							   processData: false,
+//							   data: "service="+dict[option]+"&property="+$(this).val(),
+//							   success: function(msg){
+//									//@@TODO: Fix the CSS
+//									//alert(msg);
+//									var data = msg.tokenize(",", " ", true);  //converts the comma seperated string into an array
+//									for (var i=0; i<data.length; i++){
+//										data[i] = getNameFromURI(data[i]);
+//									}
+//									$("#propname").autocomplete(data);
+//							   }
+//						});
+						
+					});
+				
+					$('#selectors').append('<br/><br/><a href="#" onclick="test()" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-circle-plus"></span>Add Another Property</a> &nbsp;&nbsp;&nbsp');
 					$('#selectors').accordion('destroy').accordion({ header: "h3", autoHeight:false });
 		     	}
 			 });
@@ -278,35 +286,6 @@ function showProperties(){
 
 }
 
-function displayOld(){
-	$('#ajax-load').html('');
-	var headers = ["diseases"];
-	var data = [["Coronary artery disease"],
-	            ["Coronary artery disease, autosomal dominant, 1, 608320"],
-	            ["Coronary artery disease in familial hypercholesterolemia, protection against, 143890"],
-	            ["Coronary artery disease, susceptibility to"]];
-	var html = createDataTable(headers,data);
-	$('#dt_container').html(html);
-	$("#dt_container").dialog("open");
-	//@@TODO: I dunno why the last column is always smaller than the others - try to find a fix
-	$('.dataTable').dataTable();
-}
-
-function searchSelected(){
-	var query = 'SELECT distinct ?disease WHERE { {?x <http://www.w3.org/2000/01/rdf-schema#label> ?disease FILTER regex(?disease, "coronary artery disease", "i"). ?x <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/class> <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseaseClass/Cardiovascular>}  UNION { ?x <http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/associatedGene> <http://www4.wiwiss.fu-berlin.de/diseasome/resource/genes/ABCA1>.}}';
-	addDialog('Constructed Query', query);
-	$('#ajax-load').html('<img src="images/ajax-loader.gif"/>');
-	setTimeout("display()",3000);
-//	$.ajax({
-//	   url: "GetSelected",
-//	   processData: false,
-//	   data: "query="+query,
-//	   success: function(msg){
-//			$('#ajax-load').html("");
-//			alert(msg);
-//	   }
-//	});
-}
 
 function addDialog(title, info){
 	$("#container").title = title;
