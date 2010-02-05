@@ -37,10 +37,7 @@
 
 \begin{document}
 %
-\title{Alternate {\ttlit ACM} SIG Proceedings Paper in LaTeX
-Format\titlenote{(Produces the WWW2010-specific release, location and
-copyright information). For use with
-www2010-submission.cls V1.4. Supported by ACM.}}
+\title{QueryMed: An Intuitive Federated SPARQL Query Builder for Biomedical RDF Data}
 %\subtitle{[Extended Abstract]
 %\titlenote{A full version of this paper is available as
 %\textit{Author's Guide to Preparing ACM SIG Proceedings Using
@@ -59,7 +56,7 @@ www2010-submission.cls V1.4. Supported by ACM.}}
 % part as the last section in the body of your article BEFORE
 % References or any Appendices.
 
-\numberofauthors{5}
+\numberofauthors{2}
 %
 % Put no more than the first THREE authors in the \author command
 
@@ -74,221 +71,77 @@ www2010-submission.cls V1.4. Supported by ACM.}}
 % e-mail address. Additionally, tag each line of
 % affiliation/address with \affaddr, and tag the
 %% e-mail address with \email.
-\alignauthor Ben Trovato\titlenote{Dr.~Trovato also works at...}\\
-       \affaddr{Institute for Clarity in Documentation}\\
-       \affaddr{1932 Wallamaloo Lane}\\
-       \affaddr{Wallamaloo, New Zealand}\\
-       \email{trovato@corporation.com}
-\alignauthor G.K.M. Tobin\\
-       \affaddr{Institute for Clarity in Documentation}\\
-       \affaddr{P.O. Box 1212}\\
-       \affaddr{Dublin, Ohio 43017-6221}\\
-       \email{webmaster@marysville-ohio.com}
-\alignauthor Lars Th{\Large{\sf{\o}}}rv{$\ddot{\mbox{a}}$}ld\\
-       \affaddr{The Th{\large{\sf{\o}}}rv{$\ddot{\mbox{a}}$}ld Group}\\
-       \affaddr{1 Th{\large{\sf{\o}}}rv{$\ddot{\mbox{a}}$}ld Circle}\\
-       \affaddr{Hekla, Iceland}\\
-       \email{larst@affiliation.org}
+\alignauthor Oshani Seneviratne\\
+       \affaddr{Massachusetts Institute of Technology}\\
+       \affaddr{Cambridge, MA}\\
+       \affaddr{USA}\\
+       \email{oshani@csail.mit.edu}
+\alignauthor Rachel Sealfon\\
+       \affaddr{Massachusetts Institute of Technology}\\
+       \affaddr{Cambridge, MA}\\
+       \affaddr{USA}\\
+       \email{rsealfon@csail.mit.edu}
 }
-\additionalauthors{Additional authors: John Smith (The Th{\o}rv\"{a}ld Group,
-email: {\texttt{jsmith@affiliation.org}}) and Julius P.~Kumquat
-(The Kumquat Consortium, email: {\texttt{jpkumquat@consortium.net}}).}
-\date{30 July 1999}
+\date{15 Feb 2010}
 
 \maketitle
 \begin{abstract}
-This paper provides a sample of a LaTeX document which conforms,
-somewhat loosely, to the formatting guidelines for
-ACM SIG Proceedings. It is an {\em alternate} style which produces
-a {\em tighter-looking} paper and was designed in response to
-concerns expressed, by authors, over page-budgets.
-It complements the document \textit{Author's (Alternate) Guide to
-Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}.
-This source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
-The developers have tried to include every imaginable sort
-of ``bells and whistles", such as a subtitle, footnotes on
-title, subtitle and authors, as well as in the text, and
-every optional component (e.g. Acknowledgments, Additional
-Authors, Appendices), not to mention examples of
-equations, theorems, tables and figures.
-To make best use of this sample document, run it through \LaTeX\
-and BibTeX, and compare this source code with the printed
-output produced by the dvi file. A compiled PDF version
-is available on the web page to help you with the
-`look and feel'.
-\end{abstract}
+We have developed an open-source SPARQL query builder and result set visualizer for biomedical data, QueryMed, that allows end users to easily construct and run translational medicine queries across multiple data sources. QueryMed is flexible enough to allow queries relevant to a wide range of biomedical topics, runs federated queries across multiple SPARQL endpoints, and is designed to be accessible to users who do not know the structure of the underlying ontologies or the SPARQL query language. The system allows users to select the data sources that they wish to use, drawing on their specialized domain knowledge to decide the most appropriate data sources to query.  Users can add additional data sources if they are interested in querying endpoints that are not in the default list. After retrieval of the initial result set, query results can be filtered to improve their relevance. As an advanced querying feature, the system also allows the user to exploit the underlying structure of the RDF data to improve query results. \end{abstract}
 
 % A category with only the three required fields
-\category{H.4.m}{Information Systems}{Miscellaneous}
-\category{D.2}{Software}{Software Engineering}
-%A category including the fourth, optional field follows...
-\category{D.2.8}{Software Engineering}{Metrics}[complexity measures,
-performance measures]
+\category{J.3}{Life and Medical Sciences}{Computer Applications}
+\category{H.3.3}{Information Search and Retrieval}{Information Systems}
 
-\terms{Delphi theory}
-
-\keywords{ACM proceedings, \LaTeX, text tagging}
+\keywords{Biomedical Ontologies, SPARQL, Query Federation, Query Building, Semantic Web, User Interfaces}
 
 \section{Introduction}
-The \textit{proceedings} are the records of a conference.
-ACM seeks to give these conference by-products a uniform,
-high-quality appearance.  To do this, ACM has some rigid
-requirements for the format of the proceedings documents: there
-is a specified format (balanced  double columns), a specified
-set of fonts (Arial or Helvetica and Times Roman) in
-certain specified sizes (for instance, 9 point for body copy),
-a specified live area (18 $\times$ 23.5 cm [7" $\times$ 9.25"]) centered on
-the page, specified size of margins (2.54cm [1"] top and
-bottom and 1.9cm [.75"] left and right; specified column width
-(8.45cm [3.33"]) and gutter size (.083cm [.33"]).
 
-The good news is, with only a handful of manual
-settings\footnote{Two of these, the {\texttt{\char'134 numberofauthors}}
-and {\texttt{\char'134 alignauthor}} commands, you have
-already used; another, {\texttt{\char'134 balancecolumns}}, will
-be used in your very last run of \LaTeX\ to ensure
-balanced column heights on the last page.}, the \LaTeX\ document
-class file handles all of this for you.
+RDF data in the semantic web, like the data in relational databases, is modeled in a structured format that can be queried using a standardized query language. The biomedical domain is among the early successes of the semantic web, due to the rapidity with which the biomedical community has made its data available in RDF triple stores. However, although a plethora of useful biomedical data is currently available in RDF, there is a need for easy-to use systems that do not require the end user to have knowledge of the underlying  structure of the data, and that also allow users to run federated queries on multiple SPARQL endpoints.  For example, a physician may know her patient’s personal information, symptoms, current medications, and genotype. She may wish to determine the patient’s treatment plan and identify clinical trials for which the patient is eligible.  Although the physician has a single question--based on the information I have about this patient, what is the best treatment plan and set of clinical trials available?--there is no single data source that the physician can use to answer this question. The information that the physician needs must be gathered from numerous data sources such as Pubmed, DailyMed, Drugbank, LinkedCT, Diseasome,  and GO [Pubmed, DailyMed, Drugbank, LinkedCT, Diseasome, Gene Ontology]. Her question must be broken up into discrete pieces that can be executed individually at one data source at a time.  For example, to address her question, the physician might be interested in information on “coronary artery disease” (which she thinks is the cause of her patient’s symptoms). The information about the disease can be found in Diseasome. She might also want to know the set of drugs in DailyMed and Drugbank that can be used to treat coronary artery disease and that also will not react adversely with the patient’s current medications.  Information on clinical trials available for her patient can be found in LinkedCT.  Due to the large number of databases  that the physician needs to query in order to find an answer to her single question, she is likely to find useful a system that can automatically run queries over multiple data sources. Also, the physician may not know SPARQL query syntax, the location of the SPARQL endpoints, or the structure of the relevant ontologies. She is likely to want an intuitive way to query and to display the query result.  Developing intuitive ways to query multiple data sources and display results is both an important and a challenging problem.This paper is organized as follows: Section 2 provides background information on the semantic web and its relevance for the biomedical domain. Section 3 describes our system. Section 4 discusses related work and illustrates how QueryMed differs from previous systems. Finally, section 5 outlines future work and summarizes the contributions of our system.
 
-The remainder of this document is concerned with showing, in
-the context of an ``actual'' document, the \LaTeX\ commands
-specifically available for denoting the structure of a
-proceedings paper, rather than with giving rigorous descriptions
-or explanations of such commands.
 
-\section{The {\secit Body} of The Paper}
-Typically, the body of a paper is organized
-into a hierarchical structure, with numbered or unnumbered
-headings for sections, subsections, sub-subsections, and even
-smaller sections.  The command \texttt{{\char'134}section} that
-precedes this paragraph is part of such a
-hierarchy.\footnote{This is the second footnote.  It
-starts a series of three footnotes that add nothing
-informational, but just give an idea of how footnotes work
-and look. It is a wordy one, just so you see
-how a longish one plays out.} \LaTeX\ handles the numbering
-and placement of these headings for you, when you use
-the appropriate heading commands around the titles
-of the headings.  If you want a sub-subsection or
-smaller part to be unnumbered in your output, simply append an
-asterisk to the command name.  Examples of both
-numbered and unnumbered headings will appear throughout the
-balance of this sample document.
+\section{Background}
 
-Because the entire article is contained in
-the \textbf{document} environment, you can indicate the
-start of a new paragraph with a blank line in your
-input file; that is why this sentence forms a separate paragraph.
+\subsection{Biomedical Ontologies and Semantic Web}
 
-\subsection{Type Changes and {\subsecit Special} Characters}
-We have already seen several typeface changes in this sample.  You
-can indicate italicized words or phrases in your text with
-the command \texttt{{\char'134}textit}; emboldening with the
-command \texttt{{\char'134}textbf}
-and typewriter-style (for instance, for computer code) with
-\texttt{{\char'134}texttt}.  But remember, you do not
-have to indicate typestyle changes when such changes are
-part of the \textit{structural} elements of your
-article; for instance, the heading of this subsection will
-be in a sans serif\footnote{A third footnote, here.
-Let's make this a rather short one to
-see how it looks.} typeface, but that is handled by the
-document class file. Take care with the use
-of\footnote{A fourth, and last, footnote.}
-the curly braces in typeface changes; they mark
-the beginning and end of
-the text that is to be in the different typeface.
+The semantic web can be viewed as global database system for the data available on the world wide web. Semantic web data is modeled by structured languages such as RDF and OWL, and can be queried using a standardized query language, SPARQL [Berners-Lee, 2001]. The addition of structure to web data is intended to allow inferences to be automatically made by intelligent agents drawing on data from multiple sources. RDF data is described by a directed, labeled graph, with relationships among data items represented  in triples containing a subject, an object and a predicate.  For example, we might want to express the concept, "Sam is a professor for 6.830." The corresponding triple expresses the relationship "is a professor for" between two entities, “Sam” and “6.830”. The relationship "is a professor for" is known as the predicate of the triple; "Sam" is the subject while "6.830" is the object.  In order for this statement to be machine readable, each of the entities in the statement ("Sam," "is a professor for," and "6.830") will be described by a Uniform Resource Identifier (URI) [Manola, 2004].  The Web Ontology Language (OWL) is a language that permits the definition of ontologies, allowing additional properties and constraints on relationships among data to be represented [Smith, 2004]. Some parallels between relational databases and RDF data on the semantic web are illustrated in table 1 [Berners-Lee, 1998].Although most web data are not currently available in semantic web formats, the biomedical community has been extremely proactive in making structured biomedical data available in RDF. Thus, the biomedical knowledge domain has been an early success of the semantic web [Yip, 2009]. Many major biological and biomedical data resources, including Gene Ontology, DailyMed, LinkedCT, and Diseasome, are currently available as RDF triplestores.   Integrating biomedical data across multiple data sources and automatically extracting specific  knowledge from web resources are crucial tasks for physicians and biologists, and these semantic web resources represent valuable standardized repositories of information that can be automatically mined for biological knowledge.  The Semantic Web Health Care and Life Sciences Interest Group (HCLSIG) has been formed with the purpose of exploring the applications of the semantic web to the biomedical domain [HCLSIG].
 
-You can use whatever symbols, accented characters, or
-non-English characters you need anywhere in your document;
-you can find a complete list of what is
-available in the \textit{\LaTeX\
-User's Guide}\cite{Lamport:LaTeX}.
+However, although many valuable resources in the biomedical domain are available in RDF, there are a number of challenges that must be addressed in order to make such resources of maximal use to physicians, patients, and life scientists.  One challenge is constructing systems that allow end users to run intuitive queries on biomedical data.  Users of biomedical resources are likely to have extensive domain knowledge, but be unfamiliar with the SPARQL query language syntax and with the structure of biomedical ontologies. It is important to design user-friendly systems that allow these users to take advantage of the wealth of structured biological knowledge available on the semantic web.  Another central challenge is designing systems that permit users to query multiple data sources simultaneously, since relevant biological data is often distributed among many sources [Pasquier, 2008].
 
-\subsection{Math Equations}
-You may want to display math equations in three distinct styles:
-inline, numbered or non-numbered display.  Each of
-the three are discussed in the next sections.
+\subsection{SPARQL Query Language}
 
-\subsubsection{Inline (In-text) Equations}
-A formula that appears in the running text is called an
-inline or in-text formula.  It is produced by the
-\textbf{math} environment, which can be
-invoked with the usual \texttt{{\char'134}begin. . .{\char'134}end}
-construction or with the short form \texttt{\$. . .\$}. You
-can use any of the symbols and structures,
-from $\alpha$ to $\omega$, available in
-\LaTeX\cite{Lamport:LaTeX}; this section will simply show a
-few examples of in-text equations in context. Notice how
-this equation: \begin{math}\lim_{n\rightarrow \infty}x=0\end{math},
-set here in in-line math style, looks slightly different when
-set in display style.  (See next section).
+A SPARQL query performs a pattern-matching search on the underlying RDF graph of the desired resource.  Most SPARQL queries are constructed from basic graph patterns.  Like RDF triples, a basic graph pattern contains a subject, an object, and a predicate; however, in the basic graph pattern, the subject, object, or predicate may be replaced by variables.  The query result is the set of tuples matching the query pattern [Prud'hommeaux, 2008].The SPARQL query language is designed to query semantic web data, just as SQL is designed to query relational data. However unlike SQL, SPARQL supports multiple query forms appropriate for  retrieving information from structured graph data. In SPARQL, the following types of queries are possible:1. "ASK" query to test whether a graph contains  specific data of interest.  This type of query returns a boolean result.2. "DESCRIBE" query to generate an RDF description of one or more resources.  This type of query returns a set of RDF triples.3. "CONSTRUCT" query to create a custom RDF graph based on a query criteria. This can also be used to transform RDF data.  This type of query returns a graph matching the query criteria.4. “SELECT” query to identify triples matching a query pattern.  This type of query returns a set of matching triples.Our system supports a subset of queries of the “SELECT” type.
 
-\subsubsection{Display Equations}
-A numbered display equation -- one set off by vertical space
-from the text and centered horizontally -- is produced
-by the \textbf{equation} environment. An unnumbered display
-equation is produced by the \textbf{displaymath} environment.
+\subsection{The Query Federation Problem}
 
-Again, in either environment, you can use any of the symbols
-and structures available in \LaTeX; this section will just
-give a couple of examples of display equations in context.
-First, consider the equation, shown as an inline equation above:
-\begin{equation}\lim_{n\rightarrow \infty}x=0\end{equation}
-Notice how it is formatted somewhat differently in
-the \textbf{displaymath}
-environment.  Now, we'll enter an unnumbered equation:
-\begin{displaymath}\sum_{i=0}^{\infty} x + 1\end{displaymath}
-and follow it with another numbered equation:
-\begin{equation}\sum_{i=0}^{\infty}x_i=\int_{0}^{\pi+2} f\end{equation}
-just to demonstrate \LaTeX's able handling of numbering.
+In the relational database world, data is contained within "data silos."  Schemas for different databases are likely to differ, even if the data that is stored is similar.  For example, suppose that two companies, Company A and Company B, construct independent databases,   Database 1 and Database 2 respectively, to describe all known drugs.  Company A may include “brand name,” “generic name,” “active compound,” “cost,” “indications,” and “protein target” information in its schema, while Company B may define the corresponding table in its database using a different schema.  In addition to discrepancies in table schemas, the data itself may be represented differently by the two companies. For example, the protein target of a drug to treat cardiovascular disease may be described as “ABCA1” in Database 1, and by a synonym, “ABC1,” in Database 2.  Therefore, it will be difficult to integrate the data between Database 1 and Database 2 without writing extensive application logic, even though the two databases contain highly overlapping information. In contrast, RDF data is represented in a form that is amenable for data integration spanning multiple data sources, because unique entities are described by unique Uniform Resource Identifiers (URIs). However, because of the scale free nature of the web, locating the appropriate data endpoint to execute a specific query is a challenging problem. This is known as the query federation problem. While the SPARQL query language has some support for expressing queries that span multiple data sources, there is a need for improved systems able to orchestrate queries across multiple sources. 
 
-\subsection{Citations}
-Citations to articles \cite{bowman:reasoning,
-clark:pct, braams:babel, herlihy:methodology},
-conference proceedings \cite{clark:pct} or
-books \cite{salas:calculus, Lamport:LaTeX} listed
-in the Bibliography section of your
-article will occur throughout the text of your article.
-You should use BibTeX to automatically produce this bibliography;
-you simply need to insert one of several citation commands with
-a key of the item cited in the proper location in
-the \texttt{.tex} file \cite{Lamport:LaTeX}.
-The key is a short reference you invent to uniquely
-identify each work; in this sample document, the key is
-the first author's surname and a
-word from the title.  This identifying key is included
-with each item in the \texttt{.bib} file for your article.
+\section{QueryMed}
 
-The details of the construction of the \texttt{.bib} file
-are beyond the scope of this sample document, but more
-information can be found in the \textit{Author's Guide},
-and exhaustive details in the \textit{\LaTeX\ User's
-Guide}\cite{Lamport:LaTeX}.
+\subsection{Architecture overview}
 
-This article shows only the plainest form
-of the citation command, using \texttt{{\char'134}cite}.
-This is what is stipulated in the SIGS style specifications.
-No other citation format is endorsed or supported.
+A general overview of QueryMed architecture is shown in Figure 1. The main components of the system are the user interface and the proxy server that retrieves biomedical data from remote SPARQL endpoints. QueryMed is implemented in Java in the backend and JavaScript in the frontend.  The JQuery library [Resig] was used to develop an attractive user interface.  In the backend, the Jena library [McBride] is used to run the SPARQL queries. QueryMed relies on the following remote resources:SPARQL Endpoints:  QueryMed runs queries on multiple remote SPARQL endpoints that expose biomedical data.Sources List: The default list of endpoints available to the user is stored in a source list on the proxy server.
+
+\begin{figure}
+\centering
+%\epsfig{file=fly.eps, height=1in, width=1in}
+\caption{QueryMed Architecture Overview}
+\end{figure}
+
+
+\subsection{}
+
+
+
+\section{}
+
+\subsection{}
+
+
+\subsection{}
+
+
 
 \subsection{Tables}
-Because tables cannot be split across pages, the best
-placement for them is typically the top of the page
-nearest their initial cite.  To
-ensure this proper ``floating'' placement of tables, use the
-environment \textbf{table} to enclose the table's contents and
-the table caption.  The contents of the table itself must go
-in the \textbf{tabular} environment, to
-be aligned properly in rows and columns, with the desired
-horizontal and vertical rules.  Again, detailed instructions
-on \textbf{tabular} material
-is found in the \textit{\LaTeX\ User's Guide}.
-
-Immediately following this sentence is the point at which
-Table 1 is included in the input file; compare the
-placement of the table here with the table in the printed
-dvi output of this document.
 
 \begin{table}
 \centering
@@ -324,7 +177,6 @@ Command&A Number&Comments\\ \hline
 \texttt{{\char'134}table}& 300 & For tables\\ \hline
 \texttt{{\char'134}table*}& 400& For wider tables\\ \hline\end{tabular}
 \end{table*}
-% end the environment with {table*}, NOTE not {table}!
 
 \subsection{Figures}
 Like tables, figures cannot be split across pages; the
@@ -455,19 +307,10 @@ some or all of the \texttt{{\char'134}def}s recompilation will
 be, to say the least, problematic.
 
 \section{Conclusions}
-This paragraph will end the body of this sample document.
-Remember that you might still have Acknowledgments or
-Appendices; brief samples of these
-follow.  There is still the Bibliography to deal with; and
-we will make a disclaimer about that here: with the exception
-of the reference to the \LaTeX\ book, the citations in
-this paper are to articles which have nothing to
-do with the present subject and are used as
-examples only.
-%\end{document}  % This is where a 'short' article might terminate
 
-%ACKNOWLEDGMENTS are optional
+
 \section{Acknowledgments}
+
 This section is optional; it is a location for you
 to acknowledge grants, funding, editing assistance and
 what have you.  In the present case, for example, the
