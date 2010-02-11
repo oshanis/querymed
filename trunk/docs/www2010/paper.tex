@@ -101,12 +101,13 @@ QueryMed is flexible enough to allow queries relevant to a wide range of biomedi
 \section{Introduction}
 
 Publicly available data in the biomedical domain has grown significantly over the recent years.   For example, this data include data on drug discovery~\cite{Sharp, Goble}, clinical trial information that are publicly available at ClinicalTrails.gov, disease genes, phenotypes published by the Online Mendelian Inheritance in Man (OMIM), and etc.  With the linked open data movement, the semantic web community has been very proactive in converting these datasets to RDF~\cite{LinkingData}.  In fact, the biomedical domain is among the early successes of adopting semantic web due to the rapidity with which the community has made its data available in RDF triple stores \cite{Yip}.  
+
 %The Semantic Web Health Care and Life Sciences Interest Group (HCLSIG) has been formed with the purpose of exploring the applications of the semantic web to the biomedical domain \cite{HCLSIG}.
 
-Although a plethora of useful biomedical data is currently available in RDF, there is a need for easy-to use systems that do not require the end user to have knowledge of the underlying  structure of the data, and also allow users to run federated queries on multiple SPARQL endpoints.  The state of the art seem to be browsing the data using a linked data browser such as the Tabulator~\cite{Tabulator}.  The linked data approach allows a user to navigate the data in an exploratory manner, but lacks support for efficient filtering and querying of the data in a manner that is amenable for domain experts. Therefore, there is a need to have efficient hybrid interfaces that combine both browsing and querying~\cite{Jentzsch}.
+Although a plethora of useful biomedical data is currently available in RDF, there is a need for easy-to use systems that do not require the end user to have knowledge of the underlying  structure of the data, and that also allow users to run federated queries on multiple SPARQL endpoints.  Many currently available systems are linked data data browsers such as the Tabulator~\cite{Tabulator}, which allow a user to navigate the data in an exploratory manner, but lack support for efficiently filtering and querying the data. Therefore, there is also a  need for efficient hybrid interfaces that allow both browsing and querying~\cite{Jentzsch}. 
 
 For an example in the biomedical domain, a physician may know her patient's personal information, symptoms, current medications, and genotype. She may wish to determine the patient's treatment plan and identify clinical trials for which the patient is eligible.  Although the physician has a single question--``based on the information I have about this patient, what is the best treatment plan and set of clinical trials available?"--there is no single data source that the physician can use to answer this question. The information that the physician needs must be gathered from numerous data sources such as Pubmed, DailyMed, Drugbank, LinkedCT, Diseasome,  and GO \cite{Pubmed, DailyMed, Drugbank, LinkedCT, Diseasome, GO}. Her question must be broken up into discrete pieces that can be executed individually at one data source at a time.  
-Suppose the physician is interested in information on Òcoronary artery diseaseÓ (which she thinks is the cause of her patient's symptoms). The information about the disease can be found in Diseasome, a database that lists diseases, disease genes, and associations between them~\cite{Diseasome}. The physician might also want to know the set of drugs in DailyMed~\cite{DailyMed}, and Drugbank~\cite{Drugbank} that can be used to treat coronary artery disease.  Information on clinical trials that were successful in treating this particular disease of her patient can be found in LinkedCT~\cite{LinkedCT}.  
+Suppose the physician is interested in information on Òcoronary artery diseaseÓ (which she thinks is the cause of her patient's symptoms). The information about the disease can be found in Diseasome, a database that lists diseases, disease genes, and associations between them~\cite{Diseasome}. The physician might also want to know the set of drugs in DailyMed~\cite{DailyMed}, and Drugbank~\cite{Drugbank} that can be used to treat coronary artery disease.  Information on clinical trial for which her patient may be eligible can be found in LinkedCT~\cite{LinkedCT}.  
 
 Due to the large number of databases  that the physician needs to query in order to find an answer to her single question, she is likely to find useful, a system that can automatically run queries over multiple data sources. Also, the physician may not know SPARQL query syntax, the location of the SPARQL endpoints, or the structure of the relevant ontologies. She is likely to want an intuitive way to query and to display the query result.  Developing intuitive ways to query multiple data sources and display results is both an important and a challenging problem.  Our system, QueryMed, allows users with no knowledge of the SPARQL query language or the structure of the underlying ontologies to easily run queries across multiple SPARQL endpoints.
 
@@ -168,6 +169,8 @@ The user interface is one of the primary components of the QueryMed system. It c
 
 \item \textbf{Basic Query Interface:}  In order to make QueryMed easy to use, but still provide a flexible tool that is able to perform a range of queries, we provide an uncluttered interface with only a  blank search box and two buttons as shown in Figure \ref{fig:initial_ui}. The ``Query All" button will perform a keyword-based query over pre-selected data sources. The advanced search option ``Refine Query" allows the user to view additional query options that are handled in the Advanced Query Interface.  
 
+ For example, a physician interested in finding semantic web resources related to coronary artery disease could use Òcoronary artery diseaseÓ  as a search keyword in the input search box and select the "Query All" option.   The simplicity of the basic query interface allows this end user to rapidly and easily browse semantic web resources of interest. 
+
 \begin{figure}
 \centering
 \epsfig{file=images/new_front.jpg,  width=3in}
@@ -175,6 +178,11 @@ The user interface is one of the primary components of the QueryMed system. It c
 \label{fig:initial_ui}
 \end{figure}
 
+\item \textbf{Result Browser:} The user can view their query results organized by source in the Result Browser. The results are presented in a table with pagination.  The user can choose the number of results viewed at a time, search the columns based on some text value and also sort the columns as shown in Figure \ref{fig:results}.  This allows the user to perform additional filtering on the query results to display the most relevant results, and is particularly useful for refining queries that return a large number of results.
+
+For example, after searching for "coronary artery disease" in the basic query interface, the physician will see displayed in the Result Browser a list of disease names in the Diseasome database and drugs in DailyMed and Drugbank that relate to coronary artery 
+disease. She can then filter the results using additional search terms. For example, she knows that 
+the route of administration of the drug that she is looking for is injection, so she filters the drug query results on the route of administration field using the query term Òinjection.Ó   The additional filtering capabilities of the Result Browser allows her  to either browse a large number of query results, or refine her search to view the most relevant search terms.
 
 \item \textbf{Advanced Query Interface:} This allows the user to add new data sources, and give values for properties found at a particular selected data source. Therefore, the user is able to extend the query from a basic keyword search over all the properties as with the basic query interface, to a more targeted query. 
 
@@ -230,8 +238,29 @@ diseasome/resource/diseasome/associatedGene>
 \label{fig:SPARQL_adv}
 \end{figure}
 
+For example, the physician might be interested in finding relevant clinical trials for 
+her patient. However, the clinical trial database LinkedCt is 
+not in the default set of endpoints, so she selects the ÒRefine 
+QueryÓ option to choose additional endpoints to search. She 
+sees a list of default endpoints, and selects the ÒAddÓ option 
+to include an additional endpoint. After entering the name 
+and URL of the LinkedCT endpoint, she is able to search 
+for clinical trials for which her patient may be eligible. 
+
+
 
 \item \textbf{Dynamic Facet Creator/Filter:} This allows the user to select a  set of  data sources, load the properties available at these sources, and dynamically construct a complex SPARQL query connected by logical operators to take advantage of the structure of the data at each endpoint as shown in Figure  \ref{fig:facet_creator}. The interface allows displaying of many property lists from different sources simultaneously (grouped by source). Therefore, only information relevant to the endpoint the user is currently examining will be visible at any given time.
+
+For example, the physician might want to further refine her search for cardiovascular diseases. She 
+uses the advanced search option to construct a boolean query 
+that takes advantage of the underlying structure of the RDF 
+data in the database. She searches Diseasome for a list of 
+diseases whose class is ÒCardiovascularÓ or for which the as- 
+sociated gene is ÒABCA1.Ó Using the QueryMed advanced 
+search interface, the complex SPARQL query corresponding 
+to her question is automatically constructed (Figure \ref{fig:SPARQL_adv}), and she can 
+view the query results conveniently displayed in the Results Browser.
+
 
 \begin{figure}
 \centering
@@ -240,7 +269,6 @@ diseasome/resource/diseasome/associatedGene>
 \label{fig:facet_creator}
 \end{figure}
 
-\item \textbf{Result Browser:} The user can view their query results organized by source in the Result Browser. The results are presented in a table with pagination.  The user can choose the number of results viewed at a time, search the columns based on some text value and also sort the columns as shown in Figure \ref{fig:results}.  This allows the user to perform additional filtering on the query results to display the most relevant results, and is particularly useful for refining queries that return a large number of results.
 
 \begin{figure}
 \centering
@@ -388,15 +416,15 @@ We believe that the unstructured keyword search is likely to encourage users wit
 
 QueryMed is implemented in Java in the backend and JavaScript, HTML and CSS in the frontend.  In the backend, the Jena library \cite{McBride} is used to run the SPARQL queries and 4-store~\cite{4store} is used as a triple store to provide caching support.  The JQuery library \cite{Resig} was used to develop an attractive user interface.  
 
-\subsection{A Sample Use Case}
+%\subsection{A Sample Use Case}
 
-A physician is interested in finding semantic web resources related to coronary artery disease.  She first tries a basic search over all default resources, by entering ``coronary artery disease" in the input search box.   She then sees a list of disease names in the Diseasome database and drugs in DailyMed and Drugbank that relate to coronary artery disease displayed in a table.  She can then filter the results using additional search terms.  For example, she knows that the route of administration of the drug that she is looking for is injection, so she filters the drug query results on the route of administration field using the query term ``injection."  She then prints the table of results.
+%A physician is interested in finding semantic web resources related to coronary artery disease.  She first tries a basic search over all default resources, by entering ``coronary artery disease" in the input search box.   She then sees a list of disease names in the Diseasome database and drugs in DailyMed and Drugbank that relate to coronary artery disease displayed in a table.  She can then filter the results using additional search terms.  For example, she knows that the route of administration of the drug that she is looking for is injection, so she filters the drug query results on the route of administration field using the query term ``injection."  She then prints the table of results.
 
-She is now interested in finding relevant clinical trials for her patient.  However, the clinical trial database LinkedCt is not in the default set of endpoints, so she selects the ``Refine Query" option to choose additional endpoints to search.  She sees a list of default endpoints, and selects the ``Add" option to include an additional endpoint.  After entering the name and URL of the LinkedCT endpoint, she is able to search for clinical trials for which her patient may be eligible.  
+%She is now interested in finding relevant clinical trials for her patient.  However, the clinical trial database LinkedCt is not in the default set of endpoints, so she selects the ``Refine Query" option to choose additional endpoints to search.  She sees a list of default endpoints, and selects the ``Add" option to include an additional endpoint.  After entering the name and URL of the LinkedCT endpoint, she is able to search for clinical trials for which her patient may be eligible.  
 
-She is also interested in further refining her search.  She uses the advanced search option to construct a boolean query that takes advantage of the underlying structure of the RDF data in the database.  She searches diseasome for a list of diseases whose class is ``Cardiovascular" or for which the associated gene is ``ABCA1."  Using the QueryMed advanced search interface, the complex SPARQL query corresponding to her question is automatically constructed, and she can view the query results conveniently displayed in a table.
+%She is also interested in further refining her search.  She uses the advanced search option to construct a boolean query that takes advantage of the underlying structure of the RDF data in the database.  She searches diseasome for a list of diseases whose class is ``Cardiovascular" or for which the associated gene is ``ABCA1."  Using the QueryMed advanced search interface, the complex SPARQL query corresponding to her question is automatically constructed, and she can view the query results conveniently displayed in a table.
 
-A video illustrating this sample use case can be found at: \\
+%A video illustrating this sample use case can be found at: \\
 http://www.youtube.com/watch?v=JCr7vryS9Vg 
 
 \subsection{Performance}
@@ -436,6 +464,8 @@ For all selected endpoints, the property values take longer to load on the initi
 
 The source code for the Querymed system is available at the QueryMed Google Code project: \\
 http://code.google.com/p/querymed/
+
+A video illustrating a sample use case can be found at: [USE CASE URL]
 
 \section{Related Work}
 \label{related}
