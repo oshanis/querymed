@@ -476,15 +476,15 @@ A video illustrating a sample use case can be found at: [USE CASE URL]
 \hline
 \textbf{QueryMed}  & Yes & Yes & Yes & Yes & Yes & Yes & Yes  \\
 \hline
-\textbf{SMART}  & & & Yes & No & No & Yes & Yes  \\
+\textbf{SMART}  & No & Yes & Yes & No & No & Yes & Yes  \\
 \hline
-\textbf{DARQ}  & &   & Yes & N/A & No & Yes & No  \\
+\textbf{DARQ}  & No &  No & Yes & N/A & No & Yes & No  \\
 \hline
-\textbf{GoWeb}   & &  & Yes & No & Yes & No & Yes  \\
+\textbf{GoWeb}   & Yes & No  & Yes & No & Yes & No & Yes  \\
 \hline
-\textbf{BioGateway}   & &  & Yes & No & No & No & Yes  \\
+\textbf{BioGateway}   & Yes & Yes & Yes & No & No & No & Yes  \\
 \hline
-\textbf{Twinkle}   & &  & Yes & No & No & Yes & Yes  \\
+\textbf{Twinkle}   & No & No & Yes & No & No & Yes & Yes  \\
 \hline
 \end{tabular}
 \caption{Comparison of selected features of the QueryMed system with other related systems.}
@@ -496,7 +496,9 @@ A number of existing tools aim to provide a user-friendly interface for browsing
 
 The SMART query tool is a web-based application designed to allow biologists to run SPARQL queries over multiple endpoints.  Queries to the SMART system are constructed using a descriptive logic query written in the natural-language like Manchester OWL syntax \cite{Battista}.  However, it cannot be expected that the end users know how  to use the Manchester OWL syntax to write queries, whereas in QueryMed, users can construct queries intuitively by specifying keywords for user selected properties. 
 
-GoWeb is another system designed for answering queries on biomedical data. It allows users to run traditional keyword-based web search with ontology search features \cite{Dietze}. After a keyword search, documents can be filtered based on the biomedical annotations they contain. However, in GoWeb the exact sources queried are not transparent and cannot be selected or modified by the user as in QueryMed.
+GoWeb and BioGateway are two other systems designed for answering queries on biomedical data. GoWeb allows users to run traditional keyword-based web search with ontology search features \cite{Dietze, Antezana}. After a keyword search, documents can be filtered based on the biomedical annotations they contain. However, in GoWeb the exact sources queried are not transparent and cannot be selected or modified by the user as in QueryMed.  BioGateway provides a web interface to query multiple SPARQL endpoints, but does not allow the user to dynamically add endpoints.
+
+
 
 Twinkle offers a stand-alone graphical user interface to load and edit SPARQL queries that can be used to query online SPARQL endpoints \cite{Dodds}. Our system differs from the Twinkle system in several aspects. First of all, in Twinkle, the user is expected to know what is already available at the SPARQL endpoints to write the query. But in QueryMed, we only ask for specific keywords of interest, and give the option of restricting the query should the user wish to run a more precise query. Second, although Twinkle was designed to be a more general purpose system, it only supports a small number of specific SPARQL endpoints, while QueryMed allows the user to dynamically add SPARQL endpoints.
 
@@ -519,7 +521,7 @@ Since a major goal of QueryMed is ease of use by physicians, life scientists, an
 
 \section{Conclusion}
 
-The main contributions of our system are: dynamic construction of complex SPARQL queries based on intuitive user input; dynamic addition of user-specified endpoints; and ability to run queries over multiple endpoints. Because of the unique features of our system, we believe it will be of use to the biomedical community.  We also believe tools such as QueryMed will entice more people to expose their data as linked open data.
+The main contributions of our system are: dynamic construction of complex SPARQL queries based on intuitive user input; dynamic addition of user-specified endpoints; and ability to run queries over multiple endpoints. Because of the unique features of our system, we believe it will be of use to the biomedical community.  We also believe that systems such as such as QueryMed, which make SPARQL endpoints  easily accessible to end users, will entice more people to expose their data as linked open data.
 
 \section{Acknowledgments}
 
