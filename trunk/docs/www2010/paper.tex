@@ -484,7 +484,7 @@ For all selected endpoints, without local data (i.e. no cache on the proxy serve
 
 \smallskip
 
-Therefore, it is fair to say that bottleneck in the running time of our system is running queries that must retrieve many triples from slow remote SPARQL endpoints.  By managing our own cache to contain the data most likely to be needed on the proxy server, we were able to reduce running time further. 
+Therefore, it is fair to say that bottleneck in the running time of our system is running queries that must retrieve many triples from slow remote SPARQL endpoints.  By managing our own cache to contain the data most likely to be needed on the proxy server, we were able to dramatically decrease running time.
 
 \smallskip
 
@@ -502,7 +502,7 @@ ORDER BY ?property
 \begin{figure}
 \centering
 \epsfig{file=images/chart.jpg, width=3in}
-\caption{Comparison of Query Execution Times at Various SPARQL Endpoints With and Without Local Data (Cache)}
+\caption{Comparison of Query Execution Times (measured in milliseconds) at Various SPARQL Endpoints With and Without Local Data (Cache) (average of three trials)}
 \label{fig:chart}
 \end{figure}
 
@@ -593,7 +593,7 @@ Since a major goal of QueryMed is ease of use by physicians, life scientists, an
 \section{Conclusion}
 \label{conclusion}
 
-The main contributions of our system are: dynamic construction of complex SPARQL queries based on intuitive user input; dynamic addition of user-specified endpoints; and ability to run queries over multiple endpoints. Because of the unique features of our system, we believe it will be of use to the biomedical community.  We also believe that systems such as such as QueryMed, which make SPARQL endpoints  easily accessible to end users, will entice more people to expose their data as linked open data.
+The main contributions of our system are: dynamic construction of complex SPARQL queries based on intuitive user input; dynamic addition of user-specified endpoints; and ability to run queries over multiple endpoints. Because our system is flexible and easy to use, we believe it will be of use to the biomedical community.  We also believe that developing systems such as such as QueryMed, which make SPARQL endpoints  easily accessible to end users, will entice more people to expose their data as linked open data.
 
 %\section{Acknowledgments}
 
