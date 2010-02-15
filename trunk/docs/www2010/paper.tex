@@ -88,6 +88,7 @@
 \maketitle
 \begin{abstract}
 We have developed an open-source SPARQL query builder and result set visualizer for biomedical data, QueryMed, that allows end users to easily construct and run translational medicine queries across multiple data sources. 
+\smallskip
 
 QueryMed is flexible enough to allow queries relevant to a wide range of biomedical topics, runs queries across multiple SPARQL endpoints, and is designed to be accessible to users who do not know the structure of the underlying ontologies used in describing the datasets, or the SPARQL query language to query the data. The system allows users to select the data sources that they wish to use, drawing on their specialized domain knowledge to decide the most appropriate data sources to query.  Users can add additional data sources if they are interested in querying endpoints that are not in the default list. After retrieval of the initial result set, query results can be filtered to improve their relevance.  The system also allows the user to exploit the underlying structure of the RDF data to improve query results. 
 \end{abstract}
@@ -103,15 +104,21 @@ QueryMed is flexible enough to allow queries relevant to a wide range of biomedi
 The quantity of publicly available data in the biomedical domain has dramatically increased over recent years.   Publicly available biomedical resources include data on drug discovery~\cite{Sharp, Goble}, clinical trials, diseases, disease genes, and phenotypes.  With the linked open data movement, the semantic web community has been very proactive in converting these rich information resources to RDF~\cite{LinkingData}.  In fact, the biomedical domain is among the early successes of the semantic web due to the rapidity with which the community has made its data available in RDF triple stores \cite{Yip}.  
 
 %The Semantic Web Health Care and Life Sciences Interest Group (HCLSIG) has been formed with the purpose of exploring the applications of the semantic web to the biomedical domain \cite{HCLSIG}.
+\smallskip
 
-To allow end users to exploit the abundance of useful biomedical data that is currently available in RDF, there is a need for easy-to use systems that do not require the end user to have knowledge of the underlying  structure of the data, and that also allow users to run federated queries on multiple SPARQL endpoints.  There is also a  need for efficient hybrid interfaces that allow both browsing and querying~\cite{Jentzsch}, since many currently available systems are linked data browsers such as the Tabulator~\cite{Tabulator}, which allow a user to navigate the data in an exploratory manner but lack support for filtering and querying the data.
+To allow end users to exploit the abundance of useful biomedical data that is currently available in RDF, there is a need for easy-to use systems that do not require the end user to have knowledge of the underlying  structure of the data, and that also allow users to run federated queries on multiple SPARQL endpoints.  There is also a  need for efficient hybrid interfaces that allow both browsing and querying~\cite{Jentzsch}, since many currently available systems are linked data browsers such as the Tabulator~\cite{Tabulator}, which allow a user to navigate the data in an exploratory manner but lack support for filtering and querying the data in a user friendly manner.
+
+\smallskip
 
 Answering many medically and biologically relevant questions requires searching, filtering, and combining information from multiple endpoints.  For example, a physician may know her patient's personal information, symptoms, current medications, and genotype. She may wish to determine the patient's treatment plan and identify clinical trials for which the patient is eligible.  Although the physician has a single question--``based on the information I have about this patient, what is the best treatment plan and set of clinical trials available?"--there is no single data source that the physician can use to answer this question. The information that the physician needs must be gathered from numerous data sources such as Pubmed, DailyMed, Drugbank, LinkedCT, Diseasome,  and GO \cite{Pubmed, DailyMed, Drugbank, LinkedCT, Diseasome, GO}. Her question must be broken up into discrete pieces that can be executed individually at one data source at a time.  
 
+\smallskip
+
 Since the physician must search many databases in order to find an answer to her single question, she requires a system that can automatically run queries over multiple data sources. Also, the physician may not know SPARQL query syntax, the location of the SPARQL endpoints, or the structure of the relevant ontologies. She is likely to want an intuitive way to query and to display the query result.  Developing intuitive ways to query multiple data sources and display results is both an important and a challenging problem.  Our system, QueryMed, allows users with no knowledge of the SPARQL query language or the structure of the underlying ontologies to easily run queries across multiple SPARQL endpoints.
 
+\smallskip
 
-This paper is organized as follows: Section \ref{background} provides background information on the semantic web and its relevance for the biomedical domain. Section \ref{system} describes our system. Section \ref{related} discusses related work and illustrates how QueryMed differs from previous systems. Finally, section \ref{conclusion} outlines future work and summarizes the contributions of our system.
+This paper is organized as follows: Section \ref{background} provides background information on the semantic web and its relevance for modeling data in the biomedical domain. Section \ref{system} describes our system. Section \ref{related} discusses related work and illustrates how QueryMed differs from previous systems. Section \ref{future-work} outlines future work giving an outlook for Querymed. Finally section \ref{conclusion} summarizes the contributions of our system.
 
 
 \section{Background}
@@ -120,14 +127,22 @@ This paper is organized as follows: Section \ref{background} provides background
 The semantic web can be viewed as a global database system for the information available on the world wide web. Semantic web data is modeled by structured languages such as RDF and OWL, and can be queried using the SPARQL query language. The addition of structure to web data allows inferences to be automatically drawn by intelligent agents integrating data from multiple sources~\cite{Berners-Lee1}.  
 %Although most web data are not currently available in semantic web formats, the biomedical knowledge domain has been an early success of the semantic web \cite{Yip}. 
 
+\smallskip
+
 Many major biological and biomedical data resources, including Gene Ontology, DailyMed, LinkedCT, and Diseasome, are currently available as RDF triplestores.   Almost all of these data sources are interlinked with each other. Integrating biomedical data across multiple data sources and automatically extracting specific  knowledge from web resources are crucial tasks for physicians and biologists. These semantic web resources represent valuable repositories of information that can be automatically mined for applications that require biological knowledge.  
 
+\smallskip
+
 Although many valuable resources in the biomedical domain are available in RDF, there are a number of challenges that must be addressed in order to make such resources accessible to physicians, patients, and life scientists.  One challenge is constructing systems that allow end users to run intuitive queries on biomedical data.  Users of biomedical resources are likely to have extensive domain knowledge, but be unfamiliar with the SPARQL query language syntax and with the structure of biomedical ontologies.  Almost all the SPARQL endpoints available today are offering a generic query interface that requires users to write SPARQL queries.  Also, no hints about the structure of data available from the SPARQL endpoint is given as the user is constructing the SPARQL query.  The user has to essentially construct the queries that are needed for her purpose by trial and error.  This can be a daunting task  especially for someone who is new to semantic web technologies.  Therefore, it is important to design user-friendly systems that allow users to take advantage of the wealth of structured biological knowledge available on the semantic web.  Another central challenge is designing systems that permit users to query multiple data sources simultaneously, since relevant biological data are often distributed among many sources \cite{Pasquier}.  
+
+\smallskip
 
 \section{Design \& Implementation}
 \label{system}
 
 The QueryMed system allows users to easily query multiple biomedical data sources.  Queries can be run against a default list of datasources, or against a set of user-selected SPARQL endpoint.  The end user can easily input additional endpoints in order to utilize resources that are not included in the default list.  The system automatically translates the user input into a SPARQL query for each individual endpoint, combines the results, and returns them to the user.  The user can choose to refine the query by iteratively modifying the original query terms, and by filtering the result list.  The advanced query functionality of the QueryMed system allows the user to easily construct complex logical SPARQL queries that take advantage of the underlying structure of the ontologies. The simple user interface of the QueryMed system is designed to be intuitive for users with no knowledge of the SPARQL query language. 
+
+\smallskip
 
 In the following sections we explain the system functionality by first giving an overview of the QueryMed system architecture and the design decisions behind crucial components of the system.
 
@@ -150,6 +165,7 @@ In the following sections we explain the system functionality by first giving an
 
 A general overview of QueryMed architecture is shown in Figure \ref{fig:arch_overview}. The main components of the system are the user interface and the proxy server that takes input from the user and retrieves relevant biomedical data from remote SPARQL endpoints.   After a user submits a query from the user interface, the query is translated by the proxy server into individual SPARQL queries for each remote endpoint.  The query results are returned from the remote endpoints, combined by the proxy server, and presented to the user.  A detailed illustration of the parts of the QueryMed system is shown in Figure \ref{fig:arch_details}.  
 
+
 %The system relies on two external resources: 
 
 %\begin{enumerate}
@@ -165,6 +181,8 @@ The QueryMed user interface is designed to be intuitive for the end user, yet fl
 
 \item \textbf{Basic Query Interface:}  In order to make QueryMed easy to use, but also provide a flexible system that is capable of performing a broad variety of biomedically relevant queries, we provide an uncluttered basic search interface with only a  blank search box and two buttons as shown in Figure \ref{fig:initial_ui}. The ``Query All" button will perform a keyword-based query over pre-selected data sources. The advanced search option ``Refine Query" allows the user to view additional query options that are handled by the Advanced Query Interface.  
 
+\smallskip
+
  For example, a physician interested in finding semantic web resources related to coronary artery disease could use “coronary artery disease”  as a search keyword in the input search box and select the "Query All" option.   The simplicity of the basic query interface allows the physician to rapidly and easily browse semantic web resources of interest. 
 
 \begin{figure}
@@ -175,6 +193,8 @@ The QueryMed user interface is designed to be intuitive for the end user, yet fl
 \end{figure}
 
 \item \textbf{Result Browser:} The user can view his query results organized by source in the Result Browser. The results are presented in a table with pagination.  The user can choose the number of results viewed at a time, search the columns based on some text value and also sort the columns as shown in Figure \ref{fig:results}.  This allows the user to perform additional filtering on the query results to display the most relevant results, and is particularly useful for refining queries that return a large number of results.
+
+\smallskip
 
 For example, after searching for "coronary artery disease" in the basic query interface, the physician will see displayed in the Result Browser a list of disease names in the Diseasome database and drugs in DailyMed and Drugbank that relate to coronary artery 
 disease. She can then filter the results using additional search terms. For example, she knows that 
@@ -210,9 +230,15 @@ for clinical trials for which her patient may be eligible.
 When a data source is selected, the properties list is automatically populated with all distinct properties available at the selected endpoint. If the user wants to restrict her query based on one or more properties available, she can specify values for the desired properties.  Because the QueryMed system automatically displays a list of properties to the user, users can improve their queries using the underlying structure of the data to obtain more relevant query results. 
 %The properties list is generated by running a SPARQL query of the form given in Figure \ref{fig:SPARQL_props} at the specified data source. 
 
+\smallskip
+
 Once the properties are returned, they will be displayed in the user interface as shown in Figure \ref{fig:add_props}. Clicking an individual property link displays a description of the property. This allows the user to understand the keywords that will be most useful to search on each specific property. 
 
+\smallskip
+
 The user can choose to perform exact queries, or filter results on specific keywords. If the user does not know the specific value for a property, she can instead specify a keywords using the “FILTER” option. She also can choose logical operators to connect the various parts of their query. When “AND” is used it will be appended as a basic triple pattern to the SPARQL query, i.e. as a conjunction. When “OR” is used, the specified graph pattern is made to disjunct with the rest of the query with the SPARQL UNION operator. If no logical operator is specified, “AND” will be used by default.  The advanced query feature is capable of dynamically constructing complex SPARQL queries, such as the query shown in Figure \ref{fig:SPARQL_adv}.
+
+\smallskip
 
 For example, the physician might want to further refine her search for cardiovascular diseases. She 
 uses the advanced search option to construct a boolean query 
@@ -399,7 +425,11 @@ WHERE {?x source:property ? projection
 
 The parameters required for constructing the SPARQL queries are sent from the user interface to the proxy server. In the general ``Query All" case, the system will take the user-specified query term as text-box input, filter on all the triples available at the SPARQL endpoint to select only those that contain the keyword, and display the results. The generated SPARQL query will be of the form illustrated in Figure \ref{fig:min_query}. The word ``input" in the figure represents the keyword specified by the user.
 
+\smallskip
+
 When the results are returned, each result set is structured as a JSON object. This object identifies the endpoint where the query was executed, the URI of the endpoint, the query variables,  how many results are returned and the result set.
+
+\smallskip
 
 When the user runs an advanced query, the proxy server takes as input the data sources to be queried, the properties to be queried, the values for each of the selected properties, and the relationship between the property-value pairs and the original user-specified query term. This information is passed to the proxy server as a JSON object.
 
@@ -421,12 +451,42 @@ QueryMed is implemented in Java in the backend and JavaScript, HTML and CSS in t
 
 %She is also interested in further refining her search.  She uses the advanced search option to construct a boolean query that takes advantage of the underlying structure of the RDF data in the database.  She searches diseasome for a list of diseases whose class is ``Cardiovascular" or for which the associated gene is ``ABCA1."  Using the QueryMed advanced search interface, the complex SPARQL query corresponding to her question is automatically constructed, and she can view the query results conveniently displayed in a table.
 
-%A video illustrating this sample use case can be found at: \\
-http://www.youtube.com/watch?v=JCr7vryS9Vg 
 
 \subsection{Performance}
 
-The slowest step in running queries using the QueryMed system is populating the property values for each selected endpoint.  We compared the times required to load properties from several endpoints, by running the query illustrated in Figure \ref{fig:SPARQL_props}.  Timing data are shown in Table \ref{timing}.
+\begin{table*}
+\begin{center}
+%\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
+\begin{tabular}{| l | p{1.2cm}| p{1.2cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} | p{1.2cm} |}
+\hline
+& \multicolumn{2}{c}{\textbf{Dieseasome} } \vline & \multicolumn{2}{c}{\textbf{Dailymed}} \vline & \multicolumn{2}{c}{\textbf{Drugbank}} \vline & \multicolumn{2}{c}{\textbf{Sider}} \vline \\
+\hline
+& \textbf{Without Caching} & \textbf{With Caching} & \textbf{Without Caching} & \textbf{With Caching} & \textbf{Without Caching} & \textbf{With Caching} & \textbf{Without Caching} & \textbf{With Caching} \\
+\hline
+\textbf{1st Trial}   & 3.45 s &  134 ms & 1.77 s &   384 ms & 9.51 s & 60 ms & 14.64 s & 23 ms \\
+\hline
+\textbf{2nd Trial}  & 1.61 s & 31 ms & 1.57 s &  32 ms  & 9.34 s & 31 ms & 2.94 s & 7 ms \\
+\hline
+\textbf{3rd Trial}  & 1.71 s &  7 ms & 1.66 s &   11 ms & 9.06 s & 23 ms & 2.86 s & 6 ms\\
+\hline
+\end{tabular}
+\caption{Running times to retrieve all the properties from selected endpoints}
+\label{timing}
+\end{center}
+\end{table*}
+
+
+We observed that the slowest step in running queries using the QueryMed system is populating the property values for each selected endpoint.  We compared the times required to load properties from several endpoints, by running the query illustrated in Figure \ref{fig:SPARQL_props}.  Timing data are shown in Table \ref{timing}.
+
+\smallskip
+
+For all selected endpoints, without local data (i.e. no cache on the proxy server), the property values took longer to load.  The difference in running time between \emph{with local data} and \emph{without local data} is approximately three orders of magnitude.  The network latency and the slow performance of the remote SPARQL endpoints as compared to the local data cache can be accounted for the increase in running time for the queries in the two cases.  We also noted that the running time of the subsequent iterations of the same query is significantly less than the initial query, probably due to browser caching. When comparing the query execution time amongst the data sources, we see that the Drugbank takes the longest, probably due to the greater size of the Drugbank data as compared to the other three data sources~\footnote{As of February 15\textsuperscript{th} 2010, Diseasome contains 91,182 triples, DailyMed contains 164,276 triples, Sider contains 192,515 triples, and DrugBank contains 765,936 triples) \cite{Diseasome, DailyMed, Sider, Drugbank}}.
+
+\smallskip
+
+Therefore, it is fair to say that bottleneck in the running time of our system is running queries that must retrieve many triples from slow remote SPARQL endpoints.  By managing our own cache to contain the data most likely to be needed on the proxy server, we were able to reduce running time further. 
+
+\smallskip
 
 \begin{figure}
 \begin{Verbatim}[frame=single]
@@ -434,35 +494,30 @@ SELECT DISTINCT ?property
 WHERE { [] ?property [] }
 ORDER BY ?property
 \end{Verbatim}
-\caption{SPARQL query to retrieve all properties of a given data source}
+\caption{SPARQL query to retrieve all Properties. This was used to measure the performance of implementing a local cache.}
 \label{fig:SPARQL_props}
 \end{figure}
 
 
-For all selected endpoints, the property values take longer to load on the initial query than in subsequent iterations, probably due to browser caching. The running time to acquire the list of property values for the Drugbank endpoint is much larger than the time for the other two endpoints, probably due to the greater size of the Drugbank database.  (As of 12/10/09, Diseasome contains 91,182 triples, DailyMed contains 164,276 triples, and DrugBank contains 765,936 triples).
-
-\begin{table}
-\begin{tabular}{|l||l|l|l|}
-\hline
- & \textbf{Dieseasome} & \textbf{Dailymed} & \textbf{Drugbank} \\
-\hline
-\hline
-\textbf{1st Trial}   & 3.45 s & 1.77 s  & 9.51 s  \\
-\textbf{2nd Trial}  & 1.61 s & 1.57 s & 9.34 s \\
-\textbf{3rd Trial}  & 1.71 s & 1.66 s & 9.06 s \\
-\hline
-\end{tabular}
-\caption{Running times to retrieve all the properties from selected endpoints}
-\label{timing}
-\end{table}
+\begin{figure}
+\centering
+\epsfig{file=images/chart.jpg, width=3in}
+\caption{Comparison of Query Execution Times at Various SPARQL Endpoints With and Without Local Data (Cache)}
+\label{fig:chart}
+\end{figure}
 
 
 \subsection{QueryMed Resources}
 
 The source code for the Querymed system is available at the QueryMed Google Code project: \\
-http://code.google.com/p/querymed/
+http://code.google.com/p/querymed
 
-A video illustrating a sample use case can be found at: [USE CASE URL]
+\smallskip
+
+A video illustrating a sample use case can be found at: \\
+http://dig.csail.mit.edu/2010/Papers/www-ws-colab-science/\\
+videos
+
 
 \section{Related Work}
 \label{related}
@@ -472,7 +527,6 @@ A video illustrating a sample use case can be found at: [USE CASE URL]
 \begin{tabular}{| p{1.8cm} | p{2cm} | p{1.8cm} | p{1.8cm}| p{1.8cm}| p{1.8cm}| p{1.8cm}| p{1.8cm} |}
 \hline
  & \textbf{Hybrid Interface (Combines Querying \& Browsing)} & \textbf{Provides Local Caching} & \textbf{Queries Multiple Sources} & \textbf{Dynamic Addition of Sources} & \textbf{Allows Keyword Queries} & \textbf{Open Source} & \textbf{GUI} \\
-\hline
 \hline
 \textbf{QueryMed}  & Yes & Yes & Yes & Yes & Yes & Yes & Yes  \\
 \hline
@@ -494,35 +548,54 @@ A video illustrating a sample use case can be found at: [USE CASE URL]
 
 A number of existing tools aim to provide a user-friendly interface for browsing semantic web data, or to allow users to perform federated queries.  Several of these are described below.
 
+\smallskip
+
 The SMART query tool is a web-based application designed to allow biologists to run SPARQL queries over multiple endpoints.  Queries to the SMART system are constructed using a descriptive logic query written in the natural-language like Manchester OWL syntax \cite{Battista}.  Major differences between the QueryMed system and SMART include the ability to construct queries intuitively by specifying keywords for user selected properties, to iteratively refine query results, and to dynamically add additional endpoints in the QueryMed system. 
+
+\smallskip
 
 GoWeb and BioGateway are two additional systems designed for answering queries on biomedical data  \cite{Dietze, Antezana}.  GoWeb allows users to a hybrid search, running keyword-based queries and then filtering based on ontological concepts. However, while GoWeb functions as a search engine that incorporates ontological background knowledge to improve search results, QueryMed is a query translation system.  BioGateway provides a web interface to query a provided SPARQL endpoint that integrates multiple biomedical resources, but does not allow the user to run queries over multiple endpoints or to dynamically add endpoints.
 
+\smallskip
 
 Twinkle offers a stand-alone graphical user interface to load and edit SPARQL queries that can be used to query online SPARQL endpoints \cite{Dodds}. Our system differs from the Twinkle system in several aspects. First of all, in Twinkle, the user is expected to know what is already available at the SPARQL endpoints to write the query. But in QueryMed, we only ask for specific keywords of interest, and give the option of restricting the query should the user wish to run a more precise query. Second, although Twinkle was designed to be a more general purpose system, it only supports a small number of specific SPARQL endpoints, while QueryMed allows the user to dynamically add SPARQL endpoints.
 
+\smallskip
+
 Most SPARQL query engines are designed to run queries against individual endpoints. But it is often useful to draw on multiple web resources in answering a query. There are a number of systems, including the DARQ \cite{Quilitz} and CALO query manager \cite{Ambite} systems, designed to allow the user to run integrated queries against multiple SPARQL endpoints. 
+
+\smallskip
 
 Table \ref{comparison} compares selected features of the QueryMed system with other related systems. The QueryMed system was unique among the systems that we found in that it allows endpoints to be dynamically added by the user, and provides a hybrid interface that enables the users to both query and browse data.  Other features of the QueryMed system that distinguish it from similar systems include the ability both to perform keyword queries and to construct more advanced queries taking advantage of the structure of the data.  This feature increases the ease of use of our system relative to other similar systems.  Furthermore, the Javascript-based user interface of the QueryMed system, implemented using the JQuery library, makes our user interface particularly attractive, easy to interact with, and capable of handling a variety of user input events.  Another unique feature of our system is the property-based advanced query interface. This interface enables users to take advantage of the structure of the underlying ontologies used to represent the data without prior knowledge of the ontology structures. 
 
 \section{Future Work}
-\label{conclusion}
-
-The bottleneck in the running time of our system is running queries that must retrieve many triples from slow remote SPARQL endpoints. By caching relevant data locally, the running time could be significantly improved. We observed that the QueryMed system performs significantly faster the second time that a query is run on a given resource possibly due to browser caching. By managing our own cache to contain the data most likely to be needed on the proxy server, we could reduce running time still further. Another approach that could reduce running time still further, especially for users with a slow network connection, would be to create a complementary standalone application that gives the user the option at startup time of loading all the required RDF data. Since data is stored locally after the initial startup, using the system in subsequent queries will be rapid after an initial loading phase.  This approach might be too memory-intensive if the user wishes to run queries over many large triple stores, but might work best in a situation where there is a small or moderate amount of data in the repositories of interest to the user. 
+\label{future-work}
 
 Our system currently allows only a restricted set of SPARQL queries. Supporting additional types of queries and including query optimization functionality could increase both the flexibility and speed of the QueryMed system. By drawing on the expressivity of the SPARQL language and the information contained in the ontologies used to represent the data, it would be possible to extend our system into an intelligent reasoning system on biomedical data which allows physicians to enter sophisticated, complex queries and find relevant biomedical results.
 
+\smallskip
+
+Another approach that could reduce running time still further, especially for users with a slow network connection, would be to create a complementary standalone application that gives the user the option at startup time of loading all the required RDF data. Since data is stored locally after the initial startup, using the system in subsequent queries will be rapid after an initial loading phase.  This approach might be too memory-intensive if the user wishes to run queries over many large triple stores, but might work best in a situation where there is a small or moderate amount of data in the repositories of interest to the user. 
+
+\smallskip
+
+
 We also believe that it would be useful to allow exploration of the relationships among multiple data sources containing similar resources.  One challenge in integrating biomedical data across multiple data sources is that individual data items (i.e, a specific protein or a specific drug) may be represented by distinct URIs at different endpoints. The diversity of representations of identical data items across different biomedical data sources makes it difficult to automatically combine these items.  However, there is some cross-referencing between the biomedical data sources that we examined (for example, DailyMed drugs sometimes refer to diseases in the Diseasome SPARQL endpoint by their URI).  It might be useful to provide a representation of the relationships among search results from different sources with the query results. Additionally, the system could automatically detect similar data items even if they are identified by distinct URIs, and group similar items from distinct data sources together in the query results by natural language processing.  Another useful feature might be to allow the user to view the relationships among distinct URIs (as in the relfinder system \cite{Heim} , which displays possible paths through the RDF graph between distinct resources).
 
+\smallskip
+
 Another feature that we have begun to implement in our system is an autocompletion feature to automatically retrieve the distinct values for any given property. This feature will allow the user to automatically see all valid choices for each property, and will make the system easier to use and reduce empty query result sets.
+
+\smallskip
 
 Since a major goal of QueryMed is ease of use by physicians, life scientists, and patients, we also plan to perform a user study to understand how effectively  users without knowledge of SPARQL can interact with our system.  We plan to use data from this study to further refine our system to improve its usability.
 
 \section{Conclusion}
+\label{conclusion}
 
 The main contributions of our system are: dynamic construction of complex SPARQL queries based on intuitive user input; dynamic addition of user-specified endpoints; and ability to run queries over multiple endpoints. Because of the unique features of our system, we believe it will be of use to the biomedical community.  We also believe that systems such as such as QueryMed, which make SPARQL endpoints  easily accessible to end users, will entice more people to expose their data as linked open data.
 
-\section{Acknowledgments}
+%\section{Acknowledgments}
 
 \bibliographystyle{abbrv}
 \bibliography{references}  
